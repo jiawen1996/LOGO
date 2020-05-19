@@ -88,12 +88,12 @@ public interface LogoVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFixeXY(LogoParser.FixeXYContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code float}
+	 * Visit a parse tree produced by the {@code mult}
 	 * labeled alternative in {@link LogoParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFloat(LogoParser.FloatContext ctx);
+	T visitMult(LogoParser.MultContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code parenthese}
 	 * labeled alternative in {@link LogoParser#expr}.
@@ -101,4 +101,25 @@ public interface LogoVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitParenthese(LogoParser.ParentheseContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code sum}
+	 * labeled alternative in {@link LogoParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSum(LogoParser.SumContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code float}
+	 * labeled alternative in {@link LogoParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFloat(LogoParser.FloatContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code hasard}
+	 * labeled alternative in {@link LogoParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitHasard(LogoParser.HasardContext ctx);
 }

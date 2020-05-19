@@ -17,8 +17,13 @@ liste_instructions :
  (instruction)+    
 ;
 
+bloc :
+	'[' liste_instructions ']' # crochet
+;
+
 instruction :
-   'av' expr # av
+	'repete' expr bloc # repete
+ |  'av' expr # av
  | 're' expr # re
  | 'td' expr # td 
  | 'tg' expr # tg
@@ -27,10 +32,30 @@ instruction :
  | 'lc' # leveCrayon
  | 'bc' # baisseCrayon
  | 'fpos' # fixeXY
+ | 'store' position # store
+ | 'move' position # move
+ | bloc
 ; 
 
-expr :
-   FLOAT         # float
- | '(' expr ')'  # parenthese 
+position :
+ '(' FLOAT ',' FLOAT ',' FLOAT ')' # position
+
+loop:
+ FLOAT # float
 ;
+
+expr:
+	expr ('*' | '/' ) expr # mult
+ |  expr ('+' | '-' ) expr # sum
+ |	'hasard' (expr) # hasard
+ |	'cos' '(' expr ')' # cos	
+ |	'sin' '(' expr ')' # sin	
+ |  FLOAT # float
+ |	loop # loop
+ | '(' expr ')' # parenthese
+;
+
+
+
+
 

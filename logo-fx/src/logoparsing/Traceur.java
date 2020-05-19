@@ -9,6 +9,7 @@ package logoparsing;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.paint.Color;
+import java.util.HashMap;
 import logogui.GraphParameter;
 
 public class Traceur {
@@ -17,11 +18,13 @@ public class Traceur {
 	private double posx = initx, posy = inity; // position courante
 	private double angle = 90;
 	private double teta;
+	HashMap<Integer, int[]> couleurList = new HashMap<Integer, int[]>();
 	ObjectProperty<GraphParameter> line;
 
 	public Traceur() {
 		setTeta();
 		line = new SimpleObjectProperty<GraphParameter>();
+		this.couleurList.put(0, new int[] {0,0,0});
 	}
 
 	ObjectProperty<GraphParameter> lineProperty() {
@@ -64,5 +67,10 @@ public class Traceur {
 		setTeta();
 	}
 
+	public void changeColeur(double r) {
+		
+		couleur = Color.rgb(255,0,0);
+		couleur.invert();
+	}
 
 }
