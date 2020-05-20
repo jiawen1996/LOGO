@@ -1,5 +1,7 @@
 package logoparsing;
 
+import java.text.DecimalFormat;
+
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 
@@ -7,6 +9,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import logoparsing.LogoParser.AvContext;
 import logoparsing.LogoParser.BaisseCrayonContext;
+import logoparsing.LogoParser.CosContext;
 import logoparsing.LogoParser.CouleurContext;
 import logoparsing.LogoParser.FixeCapContext;
 import logoparsing.LogoParser.FloatContext;
@@ -15,6 +18,7 @@ import logoparsing.LogoParser.LeveCrayonContext;
 import logoparsing.LogoParser.MultContext;
 import logoparsing.LogoParser.ParentheseContext;
 import logoparsing.LogoParser.ReContext;
+import logoparsing.LogoParser.SinContext;
 import logoparsing.LogoParser.SumContext;
 import logoparsing.LogoParser.TdContext;
 import logoparsing.LogoParser.TgContext;
@@ -22,7 +26,8 @@ import logoparsing.LogoParser.TgContext;
 public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 	Traceur traceur;
 	StringProperty log = new SimpleStringProperty();
-
+	DecimalFormat df = new DecimalFormat("#.00");
+	
 	public LogoTreeVisitor() {
 		traceur = new Traceur();
 	}
@@ -173,6 +178,8 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 			return _1 == 0;
 		}
 	}
+	
+	//Fonctions de TD3
 
 	@Override
 	public Integer visitSum(SumContext ctx) {
@@ -212,6 +219,40 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 	@Override
 	// retourner une double entre 1 et un resultat de l'expression
 	public Integer visitHasard(HasardContext ctx) {
+		Binome bilan = evaluate(ctx.expr());
+		try {
+			if (bilan._1 == 0) {
+				Double r = Math.ceil((1+Math.random()*(bilan._2 - 1 + 1)));
+				setExprValue(ctx, r);
+				
+			} else {
+				return bilan._1;
+			}
+		} catch (NullPointerException ex) {
+			ex.printStackTrace();
+		}
+		return 0;
+	}
+
+	@Override
+	public Integer visitCos(CosContext ctx) {
+		Binome bilan = evaluate(ctx.expr());
+		try {
+			if (bilan._1 == 0) {
+				Double r = Double.parseDouble(df.format(Math.cos(Math.toRadians(bilan._2))));
+				setExprValue(ctx, r);
+				
+			} else {
+				return bilan._1;
+			}
+		} catch (NullPointerException ex) {
+			ex.printStackTrace();
+		}
+		return 0;
+	}
+
+	@Override
+	public Integer visitSin(SinContext ctx) {
 		Binome bilan = evaluate(ctx.expr());
 		try {
 			if (bilan._1 == 0) {

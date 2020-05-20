@@ -32,17 +32,7 @@ instruction :
  | 'lc' # leveCrayon
  | 'bc' # baisseCrayon
  | 'fpos' # fixeXY
- | 'store' position # store
- | 'move' position # move
- | bloc
 ; 
-
-position :
- '(' FLOAT ',' FLOAT ',' FLOAT ')' # position
-
-loop:
- FLOAT # float
-;
 
 expr:
 	expr ('*' | '/' ) expr # mult
@@ -51,7 +41,6 @@ expr:
  |	'cos' '(' expr ')' # cos	
  |	'sin' '(' expr ')' # sin	
  |  FLOAT # float
- |	loop # loop
  | '(' expr ')' # parenthese
 ;
 

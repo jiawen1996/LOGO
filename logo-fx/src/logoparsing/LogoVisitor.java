@@ -25,6 +25,20 @@ public interface LogoVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitListe_instructions(LogoParser.Liste_instructionsContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code crochet}
+	 * labeled alternative in {@link LogoParser#bloc}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCrochet(LogoParser.CrochetContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code repete}
+	 * labeled alternative in {@link LogoParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRepete(LogoParser.RepeteContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code av}
 	 * labeled alternative in {@link LogoParser#instruction}.
 	 * @param ctx the parse tree
@@ -94,6 +108,20 @@ public interface LogoVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitMult(LogoParser.MultContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code cos}
+	 * labeled alternative in {@link LogoParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCos(LogoParser.CosContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code sin}
+	 * labeled alternative in {@link LogoParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSin(LogoParser.SinContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code parenthese}
 	 * labeled alternative in {@link LogoParser#expr}.

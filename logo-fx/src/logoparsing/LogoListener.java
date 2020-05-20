@@ -30,6 +30,30 @@ public interface LogoListener extends ParseTreeListener {
 	 */
 	void exitListe_instructions(LogoParser.Liste_instructionsContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code crochet}
+	 * labeled alternative in {@link LogoParser#bloc}.
+	 * @param ctx the parse tree
+	 */
+	void enterCrochet(LogoParser.CrochetContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code crochet}
+	 * labeled alternative in {@link LogoParser#bloc}.
+	 * @param ctx the parse tree
+	 */
+	void exitCrochet(LogoParser.CrochetContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code repete}
+	 * labeled alternative in {@link LogoParser#instruction}.
+	 * @param ctx the parse tree
+	 */
+	void enterRepete(LogoParser.RepeteContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code repete}
+	 * labeled alternative in {@link LogoParser#instruction}.
+	 * @param ctx the parse tree
+	 */
+	void exitRepete(LogoParser.RepeteContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code av}
 	 * labeled alternative in {@link LogoParser#instruction}.
 	 * @param ctx the parse tree
@@ -149,6 +173,30 @@ public interface LogoListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitMult(LogoParser.MultContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code cos}
+	 * labeled alternative in {@link LogoParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterCos(LogoParser.CosContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code cos}
+	 * labeled alternative in {@link LogoParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitCos(LogoParser.CosContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code sin}
+	 * labeled alternative in {@link LogoParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterSin(LogoParser.SinContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code sin}
+	 * labeled alternative in {@link LogoParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitSin(LogoParser.SinContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code parenthese}
 	 * labeled alternative in {@link LogoParser#expr}.
