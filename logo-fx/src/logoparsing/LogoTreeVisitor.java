@@ -206,6 +206,9 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 			left = evaluate(ctx.expr(0));
 			right = evaluate(ctx.expr(1));
 			if (left._1 == 0 && right._1 == 0) {
+				if(ctx.getChild(1).getText().equals("/") || right._2 < 0.000001) {
+					return right._1 = -1;
+				}
 				Double r = ctx.getChild(1).getText().equals("*") ? left._2 * right._2 : left._2 / right._2;
 				setExprValue(ctx, r);
 			} else
@@ -256,7 +259,7 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 		Binome bilan = evaluate(ctx.expr());
 		try {
 			if (bilan._1 == 0) {
-				Double r = Math.ceil((1+Math.random()*(bilan._2 - 1 + 1)));
+				Double r = Double.parseDouble(df.format(Math.sin(Math.toRadians(bilan._2))));
 				setExprValue(ctx, r);
 				
 			} else {
