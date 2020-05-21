@@ -68,8 +68,8 @@ public class Traceur {
 	}
 
 	public void changeColeur(double r) {
-		
-		couleur = Color.rgb(255,0,0);
+		logogui.Color colorRGB = logogui.Color.getColor((int) r);
+		couleur = javafx.scene.paint.Color.rgb(colorRGB.getR(),colorRGB.getG(),colorRGB.getB());
 		couleur.invert();
 	}
 	
