@@ -7,6 +7,7 @@ import org.antlr.v4.runtime.tree.ParseTreeProperty;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import logogui.Color;
 import logoparsing.LogoParser.AvContext;
 import logoparsing.LogoParser.BaisseCrayonContext;
 import logoparsing.LogoParser.CosContext;
@@ -157,7 +158,7 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 		Binome bilan = evaluateExpr(ctx.expr());
 		if (bilan._1 == 0) {
 			traceur.changeColeur(bilan._2);
-			log.setValue("Change couleur  " + bilan._2);
+			log.setValue("Change couleur  " + logogui.Color.values()[bilan._2.intValue()].toString());
 			log.setValue("\n");
 		}
 		return bilan._1;
