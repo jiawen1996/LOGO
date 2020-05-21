@@ -72,5 +72,10 @@ public class Traceur {
 		couleur = Color.rgb(255,0,0);
 		couleur.invert();
 	}
+	
+	public void fixXY(double x, double y) {
+		posx = x;
+		posy = y;
+	}
 
 }

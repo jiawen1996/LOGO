@@ -13,9 +13,11 @@ import logoparsing.LogoParser.CosContext;
 import logoparsing.LogoParser.CouleurContext;
 import logoparsing.LogoParser.CrochetContext;
 import logoparsing.LogoParser.FixeCapContext;
+import logoparsing.LogoParser.FixeXYContext;
 import logoparsing.LogoParser.FloatContext;
 import logoparsing.LogoParser.HasardContext;
 import logoparsing.LogoParser.LeveCrayonContext;
+import logoparsing.LogoParser.LoopContext;
 import logoparsing.LogoParser.MultContext;
 import logoparsing.LogoParser.ParentheseContext;
 import logoparsing.LogoParser.ReContext;
@@ -44,6 +46,7 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 		return traceur;
 	}
 	
+	//得到解析代表表达式的子树的结果
 	private Binome evaluateExpr(ParseTree expr) {
 		Binome res = new Binome();
 		
@@ -54,18 +57,25 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 		return res;
 	}
 	
+	//得到解析代表循环的子树的结果
 	private Binome evaluateBloc(ParseTree bloc) {
 		Binome res = new Binome();
 		//开始访问bloc子树
 		res._1 = visit(bloc);
 		//在这里不用存值
-		res._2 = (double) res._1;
+//		res._2 = res._1 == 0 ? ;
 		return res;
 	}
 
 	private class Binome {
+		public Binome() {
+			this._1 = null;
+			this._2 = (double)0;
+		}
+		
 		//返回这一步操作是否成功
 		//L'information qui indique si l'éxecution réussit
+		
 		public Integer _1;
 		
 		//stocker le résultat du calcul
@@ -293,6 +303,7 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 				compteur = (int) Math.round(expr._2) ;
 				for(int i = 0; i < compteur; i++) {
 					bloc = evaluateBloc(ctx.bloc());
+					System.out.println("LogoTreeVisitor.visitRepete()" + bloc._2);
 				}
 			} else {
 				return expr._1 == 0 ? bloc._1 : expr._1;
@@ -308,9 +319,26 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 	@Override
 	public Integer visitCrochet(CrochetContext ctx) {
 		Binome bilan = new Binome();
+		//访问代表循环的子树
 		bilan._1 = visit(ctx.liste_instructions());
-		System.out.println("here");
 		return bilan._1;
 	}
+
+	@Override
+	public Integer visitFixeXY(FixeXYContext ctx) {
+		Binome x = evaluateExpr(ctx.expr(0));
+		Binome y = evaluateExpr(ctx.expr(1));
+		if (x._1 == 0 && y._1 == 0) {
+			traceur.fixXY(x._2, y._2);
+			log.setValue("Place la tortue à la position ( " + x._2 + ", " + y._2 + " )");
+			log.setValue("\n");
+		}
+		return 0;
+	}
+
+//	@Override
+//	public Integer visitLoop(LoopContext ctx) {
+//		
+//	}
 
 }

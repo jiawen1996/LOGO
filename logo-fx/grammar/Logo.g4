@@ -31,7 +31,7 @@ instruction :
  | 'fcap' expr # fixeCap
  | 'lc' # leveCrayon
  | 'bc' # baisseCrayon
- | 'fpos' # fixeXY
+ | 'fpos' '[' expr ',' expr ']' # fixeXY
 ; 
 
 expr:
@@ -41,6 +41,7 @@ expr:
  |	'cos' '(' expr ')' # cos	
  |	'sin' '(' expr ')' # sin	
  |  FLOAT # float
+ |	'loop' # loop
  | '(' expr ')' # parenthese
 ;
 

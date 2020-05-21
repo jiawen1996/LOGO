@@ -186,6 +186,18 @@ public interface LogoListener extends ParseTreeListener {
 	 */
 	void exitCos(LogoParser.CosContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code loop}
+	 * labeled alternative in {@link LogoParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterLoop(LogoParser.LoopContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code loop}
+	 * labeled alternative in {@link LogoParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitLoop(LogoParser.LoopContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code sin}
 	 * labeled alternative in {@link LogoParser#expr}.
 	 * @param ctx the parse tree
