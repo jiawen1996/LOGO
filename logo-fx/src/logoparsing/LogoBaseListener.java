@@ -222,6 +222,18 @@ public class LogoBaseListener implements LogoListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterTantque(LogoParser.TantqueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTantque(LogoParser.TantqueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterBooleen(LogoParser.BooleenContext ctx) { }
 	/**
 	 * {@inheritDoc}

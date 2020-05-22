@@ -24,6 +24,7 @@ import logoparsing.LogoParser.FixeXYContext;
 import logoparsing.LogoParser.FloatContext;
 import logoparsing.LogoParser.HasardContext;
 import logoparsing.LogoParser.LeveCrayonContext;
+import logoparsing.LogoParser.Liste_instructionsContext;
 import logoparsing.LogoParser.LoopContext;
 import logoparsing.LogoParser.MoveContext;
 import logoparsing.LogoParser.MultContext;
@@ -34,6 +35,7 @@ import logoparsing.LogoParser.SiContext;
 import logoparsing.LogoParser.SinContext;
 import logoparsing.LogoParser.StoreContext;
 import logoparsing.LogoParser.SumContext;
+import logoparsing.LogoParser.TantqueContext;
 import logoparsing.LogoParser.TdContext;
 import logoparsing.LogoParser.TgContext;
 
@@ -368,6 +370,13 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 	}
 
 	@Override
+	public Integer visitLoop(LoopContext ctx) {
+		Binome bilan = evaluateLoop(ctx);
+		setExprValue(ctx, bilan._2);
+		return 0;
+	}
+
+	@Override
 	public Integer visitCrochet(CrochetContext ctx) {
 		Binome bilan = new Binome();
 		// 访问代表循环的子树
@@ -409,13 +418,6 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 	}
 
 	@Override
-	public Integer visitLoop(LoopContext ctx) {
-		Binome bilan = evaluateLoop(ctx);
-		setExprValue(ctx, bilan._2);
-		return 0;
-	}
-
-	@Override
 	public Integer visitAffecter(AffecterContext ctx) {
 		Binome var = new Binome();
 
@@ -425,7 +427,7 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 		if (var._1 == 0 && value._1 == 0) {
 			String nomVar = ctx.expr(0).getText().substring(1);
 			tableSymb.creerVar(nomVar, value._2);
-			log.setValue("Bien affecter la variable " + nomVar);
+			log.setValue("Bien affecter la variable " + nomVar + " avec " + value._2);
 			log.setValue("\n");
 
 		}
@@ -435,7 +437,9 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 	@Override
 	public Integer visitDeclare(DeclareContext ctx) {
 		String varText = ctx.VAR().getText();
-		tableSymb.creerVar(varText, null);
+		if (!tableSymb.containsKey(varText)) {
+			tableSymb.creerVar(varText, null);
+		}
 		return 0;
 	}
 
@@ -460,8 +464,6 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 					r = left._2 < right._2 ? 1 : 0;
 				}
 				setExprValue(ctx, (double) r);
-				log.setValue("Bien affecter la booléen " + r);
-				log.setValue("\n");
 			} else
 				return left._1 == 0 ? right._1 : left._1;
 		} catch (NullPointerException ex) {
@@ -473,10 +475,29 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 	@Override
 	public Integer visitSi(SiContext ctx) {
 		Binome condition = evaluateBooleen(ctx.condition());
+		Binome bloc = new Binome();
 		if (condition._1 == 0) {
-			Binome bloc = condition._2 == 1 ? evaluateBloc(ctx.bloc(0)) : evaluateBloc(ctx.bloc(1));
+			bloc = condition._2 == 1 ? evaluateBloc(ctx.bloc(0)) : evaluateBloc(ctx.bloc(1));
 		}
-		return 0;
+		return bloc._1;
+	}
+
+	@Override
+	public Integer visitTantque(TantqueContext ctx) {
+		Binome condition = evaluateBooleen(ctx.condition());
+		Binome bloc = new Binome();
+		while (condition._1 == 0 && condition._2 == 1) {
+			setExprValue(ctx.bloc(), condition._2);
+			bloc = evaluateBloc(ctx.bloc());
+			condition = evaluateBooleen(ctx.condition());
+		}
+		return bloc._1;
+	}
+
+	@Override
+	public Integer visitListe_instructions(Liste_instructionsContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitListe_instructions(ctx);
 	}
 
 }

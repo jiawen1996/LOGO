@@ -10,6 +10,10 @@ public class TableSymboles {
 		this.tableSym = new HashMap<String, Double>();
 	}
 	
+	public Boolean containsKey(String nomVar) {
+		return tableSym.containsKey(nomVar);
+	}
+	
 	public void creerVar(String nomVar, Double valeur) {
 		tableSym.put(nomVar, valeur);
 	}

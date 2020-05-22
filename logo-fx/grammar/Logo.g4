@@ -37,6 +37,7 @@ instruction :
  | 'move' # move
  | 'donne' expr expr # affecter
  | 'si' condition bloc bloc # si
+ | 'tantque' condition bloc # tantque
 ; 
 
 condition:
