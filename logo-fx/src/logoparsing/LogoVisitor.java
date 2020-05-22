@@ -123,26 +123,26 @@ public interface LogoVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAffecter(LogoParser.AffecterContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code declare}
-	 * labeled alternative in {@link LogoParser#var}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDeclare(LogoParser.DeclareContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code appelle}
-	 * labeled alternative in {@link LogoParser#var}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAppelle(LogoParser.AppelleContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code mult}
 	 * labeled alternative in {@link LogoParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitMult(LogoParser.MultContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code declare}
+	 * labeled alternative in {@link LogoParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDeclare(LogoParser.DeclareContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code appelle}
+	 * labeled alternative in {@link LogoParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAppelle(LogoParser.AppelleContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code cos}
 	 * labeled alternative in {@link LogoParser#expr}.

@@ -419,10 +419,10 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 		Binome var = new Binome();
 		
 		//访问var下的子结点，并返回是否执行成功
-		var._1 = visit(ctx.var());
-		Binome value = evaluateExpr(ctx.expr());
+		var._1 = visit(ctx.expr(0));
+		Binome value = evaluateExpr(ctx.expr(1));
 		if(var._1 == 0 && value._1 == 0) {
-			String nomVar = ctx.var().getText().substring(1);
+			String nomVar = ctx.expr(0).getText().substring(1);
 			tableSymb.creerVar(nomVar, value._2);
 			log.setValue("Bien affecter la variable "+ nomVar);
 			log.setValue("\n");
@@ -435,6 +435,13 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 	public Integer visitDeclare(DeclareContext ctx) {
 		String varText = ctx.VAR().getText();
 		tableSymb.creerVar(varText, null);
+		return 0;
+	}
+
+	@Override
+	public Integer visitAppelle(AppelleContext ctx) {
+		String varText = ctx.VAR().getText();
+		setExprValue(ctx, tableSymb.getValeur(varText));
 		return 0;
 	}
 

@@ -35,14 +35,8 @@ instruction :
  | 'fpos' '[' expr ',' expr ']' # fixeXY
  | 'store' # store
  | 'move' # move
- | 'donne' var expr # affecter
- | '<'
+ | 'donne' expr expr # affecter
 ; 
-
-var:
-	'"'VAR # declare
- |	':'VAR # appelle
-;
 
 expr:
 	expr ('*' | '/' ) expr # mult
@@ -52,6 +46,8 @@ expr:
  |	'sin' '(' expr ')' # sin	
  |  FLOAT # float
  |	'loop' # loop
+ |	'"'VAR # declare
+ |	':'VAR # appelle
  | '(' expr ')' # parenthese
 ;
 
