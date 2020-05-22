@@ -38,13 +38,14 @@ import logoparsing.LogoParser.TgContext;
 public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 	Traceur traceur;
 	StringProperty log = new SimpleStringProperty();
-	Map<String, Double> tableSym = new HashMap<String, Double>();
+	TableSymboles tableSymb;
 
 	// 用来保留两位小数
 	DecimalFormat df = new DecimalFormat("#.00");
 
 	public LogoTreeVisitor() {
-		traceur = new Traceur();
+		this.traceur = new Traceur();
+		this.tableSymb = new TableSymboles();
 	}
 
 	public StringProperty logProperty() {
@@ -422,7 +423,7 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 		Binome value = evaluateExpr(ctx.expr());
 		if(var._1 == 0 && value._1 == 0) {
 			String nomVar = ctx.var().getText().substring(1);
-			tableSym.put(nomVar, value._2);
+			tableSymb.creerVar(nomVar, value._2);
 			log.setValue("Bien affecter la variable "+ nomVar);
 			log.setValue("\n");
 			
@@ -433,15 +434,9 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 	@Override
 	public Integer visitDeclare(DeclareContext ctx) {
 		String varText = ctx.VAR().getText();
-		tableSym.put(varText, null);
+		tableSymb.creerVar(varText, null);
 		return 0;
 	}
-
-	@Override
-	public Integer visitAppelle(AppelleContext ctx) {
-		return 0;
-	}
-
 
 
 }
