@@ -198,6 +198,30 @@ public interface LogoListener extends ParseTreeListener {
 	 */
 	void exitAffecter(LogoParser.AffecterContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code si}
+	 * labeled alternative in {@link LogoParser#instruction}.
+	 * @param ctx the parse tree
+	 */
+	void enterSi(LogoParser.SiContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code si}
+	 * labeled alternative in {@link LogoParser#instruction}.
+	 * @param ctx the parse tree
+	 */
+	void exitSi(LogoParser.SiContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code booleen}
+	 * labeled alternative in {@link LogoParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void enterBooleen(LogoParser.BooleenContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code booleen}
+	 * labeled alternative in {@link LogoParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void exitBooleen(LogoParser.BooleenContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code mult}
 	 * labeled alternative in {@link LogoParser#expr}.
 	 * @param ctx the parse tree

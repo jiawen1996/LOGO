@@ -36,7 +36,13 @@ instruction :
  | 'store' # store
  | 'move' # move
  | 'donne' expr expr # affecter
+ | 'si' condition bloc bloc # si
 ; 
+
+condition:
+  expr ('>' | '<' ) expr # booleen
+;
+
 
 expr:
 	expr ('*' | '/' ) expr # mult

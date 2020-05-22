@@ -123,6 +123,20 @@ public interface LogoVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAffecter(LogoParser.AffecterContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code si}
+	 * labeled alternative in {@link LogoParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSi(LogoParser.SiContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code booleen}
+	 * labeled alternative in {@link LogoParser#condition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBooleen(LogoParser.BooleenContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code mult}
 	 * labeled alternative in {@link LogoParser#expr}.
 	 * @param ctx the parse tree

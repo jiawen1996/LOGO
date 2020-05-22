@@ -14,6 +14,7 @@ import logoparsing.LogoParser.AppelleContext;
 import logoparsing.LogoParser.AvContext;
 import logoparsing.LogoParser.BaisseCrayonContext;
 import logoparsing.LogoParser.BlocContext;
+import logoparsing.LogoParser.BooleenContext;
 import logoparsing.LogoParser.CosContext;
 import logoparsing.LogoParser.CouleurContext;
 import logoparsing.LogoParser.CrochetContext;
@@ -29,6 +30,7 @@ import logoparsing.LogoParser.MultContext;
 import logoparsing.LogoParser.ParentheseContext;
 import logoparsing.LogoParser.ReContext;
 import logoparsing.LogoParser.RepeteContext;
+import logoparsing.LogoParser.SiContext;
 import logoparsing.LogoParser.SinContext;
 import logoparsing.LogoParser.StoreContext;
 import logoparsing.LogoParser.SumContext;
@@ -65,14 +67,13 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 		res._2 = res._1 == 0 ? getExprValue(expr) : Double.POSITIVE_INFINITY;
 		return res;
 	}
-	
-	private Binome evaluateVar(ParseTree var) {
+
+	private Binome evaluateBooleen(ParseTree booleen) {
 		Binome res = new Binome();
 
 		// 访问该节点下面的所有expr结点
-		res._1 = visit(var);
-		System.out.println(var.getChild(0).toString());
-		res._2 = res._1 == 0 ? getExprValue(var.getChild(0)) : Double.POSITIVE_INFINITY;
+		res._1 = visit(booleen);
+		res._2 = res._1 == 0 ? getExprValue(booleen) : Double.POSITIVE_INFINITY;
 		return res;
 	}
 
@@ -417,16 +418,16 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 	@Override
 	public Integer visitAffecter(AffecterContext ctx) {
 		Binome var = new Binome();
-		
-		//访问var下的子结点，并返回是否执行成功
+
+		// 访问var下的子结点，并返回是否执行成功
 		var._1 = visit(ctx.expr(0));
 		Binome value = evaluateExpr(ctx.expr(1));
-		if(var._1 == 0 && value._1 == 0) {
+		if (var._1 == 0 && value._1 == 0) {
 			String nomVar = ctx.expr(0).getText().substring(1);
 			tableSymb.creerVar(nomVar, value._2);
-			log.setValue("Bien affecter la variable "+ nomVar);
+			log.setValue("Bien affecter la variable " + nomVar);
 			log.setValue("\n");
-			
+
 		}
 		return 0;
 	}
@@ -445,5 +446,37 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 		return 0;
 	}
 
+	@Override
+	public Integer visitBooleen(BooleenContext ctx) {
+		Binome left, right;
+		try {
+			left = evaluateExpr(ctx.expr(0));
+			right = evaluateExpr(ctx.expr(1));
+			if (left._1 == 0 && right._1 == 0) {
+				Integer r = null;
+				if (ctx.getChild(1).getText().equals(">")) {
+					r = left._2 > right._2 ? 1 : 0;
+				} else {
+					r = left._2 < right._2 ? 1 : 0;
+				}
+				setExprValue(ctx, (double) r);
+				log.setValue("Bien affecter la booléen " + r);
+				log.setValue("\n");
+			} else
+				return left._1 == 0 ? right._1 : left._1;
+		} catch (NullPointerException ex) {
+			ex.printStackTrace();
+		}
+		return 0;
+	}
+
+	@Override
+	public Integer visitSi(SiContext ctx) {
+		Binome condition = evaluateBooleen(ctx.condition());
+		if (condition._1 == 0) {
+			Binome bloc = condition._2 == 1 ? evaluateBloc(ctx.bloc(0)) : evaluateBloc(ctx.bloc(1));
+		}
+		return 0;
+	}
 
 }
