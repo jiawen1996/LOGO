@@ -90,13 +90,13 @@ public class Traceur {
 		this.moveable = canMove;
 	}
 
-	public void movePosition() {
+	public Integer movePosition() {
 		if (!positionStack.empty()) {
 			Double[] destnation = positionStack.pop();
 			setPosition(destnation);
-
+			return 0;
 		} else {
-			return;
+			return -3;
 		}
 
 	}
@@ -122,6 +122,11 @@ public class Traceur {
 
 	public double getAngle() {
 		return angle;
+	}
+	
+	public void fixeCap(double angle) {
+		this.angle = angle;
+		setTeta();
 	}
 
 }

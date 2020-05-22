@@ -65,24 +65,24 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 		// 开始访问bloc子树
 		res._1 = visit(bloc);
 		// 在这里不用存值
-		res._2 = res._1 == 0 ? getExprValue(bloc): -1;
+		res._2 = res._1 == 0 ? getExprValue(bloc) : -1;
 		return res;
 	}
-	
+
 	private Binome evaluateLoop(ParseTree loop) {
 		Binome res = new Binome();
 		// 开始访问bloc子树
 		ParseTree parentBloc = loop.getParent();
-		while(!(parentBloc instanceof BlocContext)) {
+		while (!(parentBloc instanceof BlocContext)) {
 			parentBloc = parentBloc.getParent();
 		}
-		
-		if(parentBloc instanceof RepeteContext) {
-			res._1 = -2;	
+
+		if (parentBloc instanceof RepeteContext) {
+			res._1 = -2;
 		} else {
 			res._1 = 0;
 		}
-		res._2 = res._1 == 0 ? getExprValue(parentBloc): -1;
+		res._2 = res._1 == 0 ? getExprValue(parentBloc) : -1;
 		return res;
 	}
 
@@ -196,7 +196,13 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 
 	@Override
 	public Integer visitFixeCap(FixeCapContext ctx) {
-		return 0;
+		Binome bilan = evaluateExpr(ctx.expr());
+		if (bilan._1 == 0) {
+			traceur.fixeCap(bilan._2);
+			log.setValue("Fixer l'angle:  " + bilan._2);
+			log.setValue("\n");
+		}
+		return bilan._1;
 	}
 
 	@Override
@@ -374,18 +380,21 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 
 	@Override
 	public Integer visitMove(MoveContext ctx) {
-		traceur.movePosition();
-		log.setValue(
-				"Déplacer à la position ( " + traceur.getPosx() + ", " + traceur.getPosy() + traceur.getAngle() + " )");
-		log.setValue("\n");
-		return 0;
+		int res = traceur.movePosition();
+		if (res == 0) {
+			log.setValue("Déplacer à la position ( " + traceur.getPosx() + ", " + traceur.getPosy() + traceur.getAngle()
+					+ " )");
+			log.setValue("\n");
+		}
+		return res;
+
 	}
 
-	 @Override
-	 public Integer visitLoop(LoopContext ctx) {
-		 Binome bilan = evaluateLoop(ctx);
-		 setExprValue(ctx, bilan._2);
-		 return 0;
-	 }
+	@Override
+	public Integer visitLoop(LoopContext ctx) {
+		Binome bilan = evaluateLoop(ctx);
+		setExprValue(ctx, bilan._2);
+		return 0;
+	}
 
 }
