@@ -7,9 +7,9 @@ import org.antlr.v4.runtime.tree.ParseTreeProperty;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import logogui.Color;
 import logoparsing.LogoParser.AvContext;
 import logoparsing.LogoParser.BaisseCrayonContext;
+import logoparsing.LogoParser.BlocContext;
 import logoparsing.LogoParser.CosContext;
 import logoparsing.LogoParser.CouleurContext;
 import logoparsing.LogoParser.CrochetContext;
@@ -65,7 +65,24 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 		// 开始访问bloc子树
 		res._1 = visit(bloc);
 		// 在这里不用存值
-		// res._2 = res._1 == 0 ? ;
+		res._2 = res._1 == 0 ? getExprValue(bloc): -1;
+		return res;
+	}
+	
+	private Binome evaluateLoop(ParseTree loop) {
+		Binome res = new Binome();
+		// 开始访问bloc子树
+		ParseTree parentBloc = loop.getParent();
+		while(!(parentBloc instanceof BlocContext)) {
+			parentBloc = parentBloc.getParent();
+		}
+		
+		if(parentBloc instanceof RepeteContext) {
+			res._1 = -2;	
+		} else {
+			res._1 = 0;
+		}
+		res._2 = res._1 == 0 ? getExprValue(parentBloc): -1;
 		return res;
 	}
 
@@ -82,10 +99,6 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 
 		// stocker le résultat du calcul
 		public Double _2;
-
-		public boolean isValid() {
-			return _1 == 0;
-		}
 	}
 
 	/*
@@ -316,9 +329,9 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 		try {
 			if (expr._1 == 0) {
 				compteur = (int) Math.round(expr._2);
-				for (int i = 0; i < compteur; i++) {
+				for (int i = 1; i < compteur + 1; i++) {
+					setExprValue(ctx.bloc(), i);
 					bloc = evaluateBloc(ctx.bloc());
-					System.out.println("LogoTreeVisitor.visitRepete()" + bloc._2);
 				}
 			} else {
 				return expr._1 == 0 ? bloc._1 : expr._1;
@@ -368,9 +381,11 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 		return 0;
 	}
 
-	// @Override
-	// public Integer visitLoop(LoopContext ctx) {
-	//
-	// }
+	 @Override
+	 public Integer visitLoop(LoopContext ctx) {
+		 Binome bilan = evaluateLoop(ctx);
+		 setExprValue(ctx, bilan._2);
+		 return 0;
+	 }
 
 }
