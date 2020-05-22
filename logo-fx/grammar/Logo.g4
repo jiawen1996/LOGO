@@ -32,6 +32,8 @@ instruction :
  | 'lc' # leveCrayon
  | 'bc' # baisseCrayon
  | 'fpos' '[' expr ',' expr ']' # fixeXY
+ | 'store' # store
+ | 'move' # move
 ; 
 
 expr:

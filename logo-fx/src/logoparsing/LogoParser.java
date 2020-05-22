@@ -21,8 +21,8 @@ public class LogoParser extends Parser {
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
 		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
-		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, FLOAT=24, 
-		WS=25, COMMENT1=26, COMMENT2=27;
+		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, T__23=24, 
+		T__24=25, FLOAT=26, WS=27, COMMENT1=28, COMMENT2=29;
 	public static final int
 		RULE_programme = 0, RULE_liste_instructions = 1, RULE_bloc = 2, RULE_instruction = 3, 
 		RULE_expr = 4;
@@ -36,8 +36,8 @@ public class LogoParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "'['", "']'", "'repete'", "'av'", "'re'", "'td'", "'tg'", "'fcc'", 
-			"'fcap'", "'lc'", "'bc'", "'fpos'", "','", "'*'", "'/'", "'+'", "'-'", 
-			"'hasard'", "'cos'", "'('", "')'", "'sin'", "'loop'"
+			"'fcap'", "'lc'", "'bc'", "'fpos'", "','", "'store'", "'move'", "'*'", 
+			"'/'", "'+'", "'-'", "'hasard'", "'cos'", "'('", "')'", "'sin'", "'loop'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -45,7 +45,7 @@ public class LogoParser extends Parser {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
 			null, null, null, null, null, null, null, null, null, null, null, null, 
-			"FLOAT", "WS", "COMMENT1", "COMMENT2"
+			null, null, "FLOAT", "WS", "COMMENT1", "COMMENT2"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -189,7 +189,7 @@ public class LogoParser extends Parser {
 				setState(15); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << T__3) | (1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << T__7) | (1L << T__8) | (1L << T__9) | (1L << T__10) | (1L << T__11))) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << T__3) | (1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << T__7) | (1L << T__8) | (1L << T__9) | (1L << T__10) | (1L << T__11) | (1L << T__13) | (1L << T__14))) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -306,6 +306,22 @@ public class LogoParser extends Parser {
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof LogoVisitor ) return ((LogoVisitor<? extends T>)visitor).visitFixeCap(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class MoveContext extends InstructionContext {
+		public MoveContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterMove(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitMove(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoVisitor ) return ((LogoVisitor<? extends T>)visitor).visitMove(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -439,6 +455,22 @@ public class LogoParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class StoreContext extends InstructionContext {
+		public StoreContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterStore(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitStore(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoVisitor ) return ((LogoVisitor<? extends T>)visitor).visitStore(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class FixeXYContext extends InstructionContext {
 		public List<ExprContext> expr() {
 			return getRuleContexts(ExprContext.class);
@@ -466,7 +498,7 @@ public class LogoParser extends Parser {
 		InstructionContext _localctx = new InstructionContext(_ctx, getState());
 		enterRule(_localctx, 6, RULE_instruction);
 		try {
-			setState(46);
+			setState(48);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__2:
@@ -573,6 +605,22 @@ public class LogoParser extends Parser {
 				expr(0);
 				setState(44);
 				match(T__1);
+				}
+				break;
+			case T__13:
+				_localctx = new StoreContext(_localctx);
+				enterOuterAlt(_localctx, 11);
+				{
+				setState(46);
+				match(T__13);
+				}
+				break;
+			case T__14:
+				_localctx = new MoveContext(_localctx);
+				enterOuterAlt(_localctx, 12);
+				{
+				setState(47);
+				match(T__14);
 				}
 				break;
 			default:
@@ -771,51 +819,51 @@ public class LogoParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(67);
+			setState(69);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case T__17:
+			case T__19:
 				{
 				_localctx = new HasardContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
 
-				setState(49);
-				match(T__17);
+				setState(51);
+				match(T__19);
 				{
-				setState(50);
+				setState(52);
 				expr(0);
 				}
 				}
 				break;
-			case T__18:
+			case T__20:
 				{
 				_localctx = new CosContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(51);
-				match(T__18);
-				setState(52);
-				match(T__19);
 				setState(53);
-				expr(0);
-				setState(54);
 				match(T__20);
+				setState(54);
+				match(T__21);
+				setState(55);
+				expr(0);
+				setState(56);
+				match(T__22);
 				}
 				break;
-			case T__21:
+			case T__23:
 				{
 				_localctx = new SinContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(56);
-				match(T__21);
-				setState(57);
-				match(T__19);
 				setState(58);
-				expr(0);
+				match(T__23);
 				setState(59);
-				match(T__20);
+				match(T__21);
+				setState(60);
+				expr(0);
+				setState(61);
+				match(T__22);
 				}
 				break;
 			case FLOAT:
@@ -823,37 +871,37 @@ public class LogoParser extends Parser {
 				_localctx = new FloatContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(61);
+				setState(63);
 				match(FLOAT);
 				}
 				break;
-			case T__22:
+			case T__24:
 				{
 				_localctx = new LoopContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(62);
-				match(T__22);
+				setState(64);
+				match(T__24);
 				}
 				break;
-			case T__19:
+			case T__21:
 				{
 				_localctx = new ParentheseContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(63);
-				match(T__19);
-				setState(64);
-				expr(0);
 				setState(65);
-				match(T__20);
+				match(T__21);
+				setState(66);
+				expr(0);
+				setState(67);
+				match(T__22);
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(77);
+			setState(79);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -861,36 +909,16 @@ public class LogoParser extends Parser {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(75);
+					setState(77);
 					_errHandler.sync(this);
 					switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
 					case 1:
 						{
 						_localctx = new MultContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(69);
-						if (!(precpred(_ctx, 8))) throw new FailedPredicateException(this, "precpred(_ctx, 8)");
-						setState(70);
-						_la = _input.LA(1);
-						if ( !(_la==T__13 || _la==T__14) ) {
-						_errHandler.recoverInline(this);
-						}
-						else {
-							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-							_errHandler.reportMatch(this);
-							consume();
-						}
 						setState(71);
-						expr(9);
-						}
-						break;
-					case 2:
-						{
-						_localctx = new SumContext(new ExprContext(_parentctx, _parentState));
-						pushNewRecursionContext(_localctx, _startState, RULE_expr);
+						if (!(precpred(_ctx, 8))) throw new FailedPredicateException(this, "precpred(_ctx, 8)");
 						setState(72);
-						if (!(precpred(_ctx, 7))) throw new FailedPredicateException(this, "precpred(_ctx, 7)");
-						setState(73);
 						_la = _input.LA(1);
 						if ( !(_la==T__15 || _la==T__16) ) {
 						_errHandler.recoverInline(this);
@@ -900,14 +928,34 @@ public class LogoParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
+						setState(73);
+						expr(9);
+						}
+						break;
+					case 2:
+						{
+						_localctx = new SumContext(new ExprContext(_parentctx, _parentState));
+						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(74);
+						if (!(precpred(_ctx, 7))) throw new FailedPredicateException(this, "precpred(_ctx, 7)");
+						setState(75);
+						_la = _input.LA(1);
+						if ( !(_la==T__17 || _la==T__18) ) {
+						_errHandler.recoverInline(this);
+						}
+						else {
+							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+							_errHandler.reportMatch(this);
+							consume();
+						}
+						setState(76);
 						expr(8);
 						}
 						break;
 					}
 					} 
 				}
-				setState(79);
+				setState(81);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
 			}
@@ -942,29 +990,30 @@ public class LogoParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\35S\4\2\t\2\4\3\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\37U\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\3\2\3\2\3\3\6\3\20\n\3\r\3\16\3\21\3\4\3\4"+
 		"\3\4\3\4\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3"+
-		"\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\5\5\61\n\5\3\6\3\6\3\6\3\6\3\6"+
-		"\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\5\6F\n\6\3\6"+
-		"\3\6\3\6\3\6\3\6\3\6\7\6N\n\6\f\6\16\6Q\13\6\3\6\2\3\n\7\2\4\6\b\n\2\4"+
-		"\3\2\20\21\3\2\22\23\2^\2\f\3\2\2\2\4\17\3\2\2\2\6\23\3\2\2\2\b\60\3\2"+
-		"\2\2\nE\3\2\2\2\f\r\5\4\3\2\r\3\3\2\2\2\16\20\5\b\5\2\17\16\3\2\2\2\20"+
-		"\21\3\2\2\2\21\17\3\2\2\2\21\22\3\2\2\2\22\5\3\2\2\2\23\24\7\3\2\2\24"+
-		"\25\5\4\3\2\25\26\7\4\2\2\26\7\3\2\2\2\27\30\7\5\2\2\30\31\5\n\6\2\31"+
-		"\32\5\6\4\2\32\61\3\2\2\2\33\34\7\6\2\2\34\61\5\n\6\2\35\36\7\7\2\2\36"+
-		"\61\5\n\6\2\37 \7\b\2\2 \61\5\n\6\2!\"\7\t\2\2\"\61\5\n\6\2#$\7\n\2\2"+
-		"$\61\5\n\6\2%&\7\13\2\2&\61\5\n\6\2\'\61\7\f\2\2(\61\7\r\2\2)*\7\16\2"+
-		"\2*+\7\3\2\2+,\5\n\6\2,-\7\17\2\2-.\5\n\6\2./\7\4\2\2/\61\3\2\2\2\60\27"+
-		"\3\2\2\2\60\33\3\2\2\2\60\35\3\2\2\2\60\37\3\2\2\2\60!\3\2\2\2\60#\3\2"+
-		"\2\2\60%\3\2\2\2\60\'\3\2\2\2\60(\3\2\2\2\60)\3\2\2\2\61\t\3\2\2\2\62"+
-		"\63\b\6\1\2\63\64\7\24\2\2\64F\5\n\6\2\65\66\7\25\2\2\66\67\7\26\2\2\67"+
-		"8\5\n\6\289\7\27\2\29F\3\2\2\2:;\7\30\2\2;<\7\26\2\2<=\5\n\6\2=>\7\27"+
-		"\2\2>F\3\2\2\2?F\7\32\2\2@F\7\31\2\2AB\7\26\2\2BC\5\n\6\2CD\7\27\2\2D"+
-		"F\3\2\2\2E\62\3\2\2\2E\65\3\2\2\2E:\3\2\2\2E?\3\2\2\2E@\3\2\2\2EA\3\2"+
-		"\2\2FO\3\2\2\2GH\f\n\2\2HI\t\2\2\2IN\5\n\6\13JK\f\t\2\2KL\t\3\2\2LN\5"+
-		"\n\6\nMG\3\2\2\2MJ\3\2\2\2NQ\3\2\2\2OM\3\2\2\2OP\3\2\2\2P\13\3\2\2\2Q"+
-		"O\3\2\2\2\7\21\60EMO";
+		"\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\5\5\63\n\5\3\6\3\6\3\6"+
+		"\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\5\6H"+
+		"\n\6\3\6\3\6\3\6\3\6\3\6\3\6\7\6P\n\6\f\6\16\6S\13\6\3\6\2\3\n\7\2\4\6"+
+		"\b\n\2\4\3\2\22\23\3\2\24\25\2b\2\f\3\2\2\2\4\17\3\2\2\2\6\23\3\2\2\2"+
+		"\b\62\3\2\2\2\nG\3\2\2\2\f\r\5\4\3\2\r\3\3\2\2\2\16\20\5\b\5\2\17\16\3"+
+		"\2\2\2\20\21\3\2\2\2\21\17\3\2\2\2\21\22\3\2\2\2\22\5\3\2\2\2\23\24\7"+
+		"\3\2\2\24\25\5\4\3\2\25\26\7\4\2\2\26\7\3\2\2\2\27\30\7\5\2\2\30\31\5"+
+		"\n\6\2\31\32\5\6\4\2\32\63\3\2\2\2\33\34\7\6\2\2\34\63\5\n\6\2\35\36\7"+
+		"\7\2\2\36\63\5\n\6\2\37 \7\b\2\2 \63\5\n\6\2!\"\7\t\2\2\"\63\5\n\6\2#"+
+		"$\7\n\2\2$\63\5\n\6\2%&\7\13\2\2&\63\5\n\6\2\'\63\7\f\2\2(\63\7\r\2\2"+
+		")*\7\16\2\2*+\7\3\2\2+,\5\n\6\2,-\7\17\2\2-.\5\n\6\2./\7\4\2\2/\63\3\2"+
+		"\2\2\60\63\7\20\2\2\61\63\7\21\2\2\62\27\3\2\2\2\62\33\3\2\2\2\62\35\3"+
+		"\2\2\2\62\37\3\2\2\2\62!\3\2\2\2\62#\3\2\2\2\62%\3\2\2\2\62\'\3\2\2\2"+
+		"\62(\3\2\2\2\62)\3\2\2\2\62\60\3\2\2\2\62\61\3\2\2\2\63\t\3\2\2\2\64\65"+
+		"\b\6\1\2\65\66\7\26\2\2\66H\5\n\6\2\678\7\27\2\289\7\30\2\29:\5\n\6\2"+
+		":;\7\31\2\2;H\3\2\2\2<=\7\32\2\2=>\7\30\2\2>?\5\n\6\2?@\7\31\2\2@H\3\2"+
+		"\2\2AH\7\34\2\2BH\7\33\2\2CD\7\30\2\2DE\5\n\6\2EF\7\31\2\2FH\3\2\2\2G"+
+		"\64\3\2\2\2G\67\3\2\2\2G<\3\2\2\2GA\3\2\2\2GB\3\2\2\2GC\3\2\2\2HQ\3\2"+
+		"\2\2IJ\f\n\2\2JK\t\2\2\2KP\5\n\6\13LM\f\t\2\2MN\t\3\2\2NP\5\n\6\nOI\3"+
+		"\2\2\2OL\3\2\2\2PS\3\2\2\2QO\3\2\2\2QR\3\2\2\2R\13\3\2\2\2SQ\3\2\2\2\7"+
+		"\21\62GOQ";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

@@ -10,6 +10,8 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.paint.Color;
 import java.util.HashMap;
+import java.util.Stack;
+
 import logogui.GraphParameter;
 
 public class Traceur {
@@ -20,11 +22,13 @@ public class Traceur {
 	private double teta;
 	private boolean moveable;
 	ObjectProperty<GraphParameter> line;
+	private Stack<Double[]> positionStack;
 
 	public Traceur() {
 		setTeta();
 		line = new SimpleObjectProperty<GraphParameter>();
 		this.moveable = false;
+		this.positionStack = new Stack<Double[]>();
 	}
 
 	ObjectProperty<GraphParameter> lineProperty() {
@@ -61,7 +65,7 @@ public class Traceur {
 		angle = (angle - r) % 360;
 		setTeta();
 	}
-	
+
 	public void tg(double r) {
 		angle = (angle + r) % 360;
 		setTeta();
@@ -69,10 +73,10 @@ public class Traceur {
 
 	public void changeColeur(double r) {
 		logogui.Color colorRGB = logogui.Color.getColor((int) r);
-		couleur = javafx.scene.paint.Color.rgb(colorRGB.getR(),colorRGB.getG(),colorRGB.getB());
+		couleur = javafx.scene.paint.Color.rgb(colorRGB.getR(), colorRGB.getG(), colorRGB.getB());
 		couleur.invert();
 	}
-	
+
 	public void fixXY(double x, double y) {
 		posx = x;
 		posy = y;
@@ -84,6 +88,40 @@ public class Traceur {
 
 	public void setMoveable(boolean canMove) {
 		this.moveable = canMove;
+	}
+
+	public void movePosition() {
+		if (!positionStack.empty()) {
+			Double[] destnation = positionStack.pop();
+			setPosition(destnation);
+
+		} else {
+			return;
+		}
+
+	}
+
+	public void setPosition(Double[] p) {
+		this.posx = p[0];
+		this.posy = p[1];
+		this.angle = p[2];
+	}
+
+	public void storePosition() {
+		Double[] p = { posx, posy, angle };
+		positionStack.push(p);
+	}
+
+	public double getPosx() {
+		return posx;
+	}
+
+	public double getPosy() {
+		return posy;
+	}
+
+	public double getAngle() {
+		return angle;
 	}
 
 }

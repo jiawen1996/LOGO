@@ -19,11 +19,13 @@ import logoparsing.LogoParser.FloatContext;
 import logoparsing.LogoParser.HasardContext;
 import logoparsing.LogoParser.LeveCrayonContext;
 import logoparsing.LogoParser.LoopContext;
+import logoparsing.LogoParser.MoveContext;
 import logoparsing.LogoParser.MultContext;
 import logoparsing.LogoParser.ParentheseContext;
 import logoparsing.LogoParser.ReContext;
 import logoparsing.LogoParser.RepeteContext;
 import logoparsing.LogoParser.SinContext;
+import logoparsing.LogoParser.StoreContext;
 import logoparsing.LogoParser.SumContext;
 import logoparsing.LogoParser.TdContext;
 import logoparsing.LogoParser.TgContext;
@@ -345,6 +347,24 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 			log.setValue("Place la tortue à la position ( " + x._2 + ", " + y._2 + " )");
 			log.setValue("\n");
 		}
+		return 0;
+	}
+
+	@Override
+	public Integer visitStore(StoreContext ctx) {
+		traceur.storePosition();
+		log.setValue("Bien stocker la position ( " + traceur.getPosx() + ", " + traceur.getPosy() + traceur.getAngle()
+				+ " )");
+		log.setValue("\n");
+		return 0;
+	}
+
+	@Override
+	public Integer visitMove(MoveContext ctx) {
+		traceur.movePosition();
+		log.setValue(
+				"Déplacer à la position ( " + traceur.getPosx() + ", " + traceur.getPosy() + traceur.getAngle() + " )");
+		log.setValue("\n");
 		return 0;
 	}
 
