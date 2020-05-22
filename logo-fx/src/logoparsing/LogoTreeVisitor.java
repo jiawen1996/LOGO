@@ -1,18 +1,23 @@
 package logoparsing;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import logoparsing.LogoParser.AffecterContext;
+import logoparsing.LogoParser.AppelleContext;
 import logoparsing.LogoParser.AvContext;
 import logoparsing.LogoParser.BaisseCrayonContext;
 import logoparsing.LogoParser.BlocContext;
 import logoparsing.LogoParser.CosContext;
 import logoparsing.LogoParser.CouleurContext;
 import logoparsing.LogoParser.CrochetContext;
+import logoparsing.LogoParser.DeclareContext;
 import logoparsing.LogoParser.FixeCapContext;
 import logoparsing.LogoParser.FixeXYContext;
 import logoparsing.LogoParser.FloatContext;
@@ -33,6 +38,7 @@ import logoparsing.LogoParser.TgContext;
 public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 	Traceur traceur;
 	StringProperty log = new SimpleStringProperty();
+	Map<String, Double> tableSym = new HashMap<String, Double>();
 
 	// 用来保留两位小数
 	DecimalFormat df = new DecimalFormat("#.00");
@@ -56,6 +62,16 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 		// 访问该节点下面的所有expr结点
 		res._1 = visit(expr);
 		res._2 = res._1 == 0 ? getExprValue(expr) : Double.POSITIVE_INFINITY;
+		return res;
+	}
+	
+	private Binome evaluateVar(ParseTree var) {
+		Binome res = new Binome();
+
+		// 访问该节点下面的所有expr结点
+		res._1 = visit(var);
+		System.out.println(var.getChild(0).toString());
+		res._2 = res._1 == 0 ? getExprValue(var.getChild(0)) : Double.POSITIVE_INFINITY;
 		return res;
 	}
 
@@ -396,5 +412,36 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 		setExprValue(ctx, bilan._2);
 		return 0;
 	}
+
+	@Override
+	public Integer visitAffecter(AffecterContext ctx) {
+		Binome var = new Binome();
+		
+		//访问var下的子结点，并返回是否执行成功
+		var._1 = visit(ctx.var());
+		Binome value = evaluateExpr(ctx.expr());
+		if(var._1 == 0 && value._1 == 0) {
+			String nomVar = ctx.var().getText().substring(1);
+			tableSym.put(nomVar, value._2);
+			log.setValue("Bien affecter la variable "+ nomVar);
+			log.setValue("\n");
+			
+		}
+		return 0;
+	}
+
+	@Override
+	public Integer visitDeclare(DeclareContext ctx) {
+		String varText = ctx.VAR().getText();
+		tableSym.put(varText, null);
+		return 0;
+	}
+
+	@Override
+	public Integer visitAppelle(AppelleContext ctx) {
+		return 0;
+	}
+
+
 
 }

@@ -5,6 +5,7 @@ grammar Logo ;
 }
 
 FLOAT : [0-9][0-9]*('.'[0-9]+)? ;
+VAR : [a-zA-Z][a-zA-Z]* ;
 WS : [ \t\r\n]+ -> skip ;
 COMMENT1 : '//' .*? [\r\n]+ -> skip;
 COMMENT2 : '/*' .*? '*/' -> skip;
@@ -34,7 +35,14 @@ instruction :
  | 'fpos' '[' expr ',' expr ']' # fixeXY
  | 'store' # store
  | 'move' # move
+ | 'donne' var expr # affecter
+ | '<'
 ; 
+
+var:
+	'"'VAR # declare
+ |	':'VAR # appelle
+;
 
 expr:
 	expr ('*' | '/' ) expr # mult
