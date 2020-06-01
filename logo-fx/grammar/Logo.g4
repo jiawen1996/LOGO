@@ -35,8 +35,8 @@ instruction :
  | 'fpos' '[' expr ',' expr ']' # fixeXY
  | 'store' # store
  | 'move' # move
- | 'donne' expr expr # affecter
- | 'si' condition bloc bloc # si
+ | 'donne' '"' VAR expr # affecter
+ | 'si' condition bloc bloc ? # si
  | 'tantque' condition bloc # tantque
 ; 
 
@@ -53,7 +53,6 @@ expr:
  |	'sin' '(' expr ')' # sin	
  |  FLOAT # float
  |	'loop' # loop
- |	'"'VAR # declare
  |	':'VAR # appelle
  | '(' expr ')' # parenthese
 ;

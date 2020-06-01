@@ -246,18 +246,6 @@ public interface LogoListener extends ParseTreeListener {
 	 */
 	void exitMult(LogoParser.MultContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code declare}
-	 * labeled alternative in {@link LogoParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterDeclare(LogoParser.DeclareContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code declare}
-	 * labeled alternative in {@link LogoParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitDeclare(LogoParser.DeclareContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code appelle}
 	 * labeled alternative in {@link LogoParser#expr}.
 	 * @param ctx the parse tree
