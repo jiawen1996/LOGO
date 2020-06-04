@@ -438,8 +438,16 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
                 Integer r = null;
                 if (ctx.getChild(1).getText().equals(">")) {
                     r = left._2 > right._2 ? 1 : 0;
-                } else {
+                } else if (ctx.getChild(1).getText().equals("<")) {
                     r = left._2 < right._2 ? 1 : 0;
+                } else if (ctx.getChild(1).getText().equals("<=")) {
+                    r = left._2 <= right._2 ? 1 : 0;
+                } else if (ctx.getChild(1).getText().equals(">=")) {
+                    r = left._2 >= right._2 ? 1 : 0;
+                } else if (ctx.getChild(1).getText().equals("==")) {
+                    r = left._2 == right._2 ? 1 : 0;
+                } else if (ctx.getChild(1).getText().equals("!=")) {
+                    r = left._2 != right._2 ? 1 : 0;
                 }
                 setExprValue(ctx, (double) r);
             } else
@@ -452,7 +460,7 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 
     @Override
     public Integer visitSi(SiContext ctx) {
-        Binome condition = evaluateBooleen(ctx.condition());
+        Binome condition = evaluateBooleen(ctx.expr());
         Binome bloc = new Binome();
         if (condition._1 == 0) {
             bloc = condition._2 == 1 ? evaluateBloc(ctx.bloc(0)) : evaluateBloc(ctx.bloc(1));
@@ -462,12 +470,12 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 
     @Override
     public Integer visitTantque(TantqueContext ctx) {
-        Binome condition = evaluateBooleen(ctx.condition());
+        Binome condition = evaluateBooleen(ctx.expr());
         Binome bloc = new Binome();
         while (condition._1 == 0 && condition._2 == 1) {
             setExprValue(ctx.bloc(), condition._2);
             bloc = evaluateBloc(ctx.bloc());
-            condition = evaluateBooleen(ctx.condition());
+            condition = evaluateBooleen(ctx.expr());
         }
         return bloc._1;
     }

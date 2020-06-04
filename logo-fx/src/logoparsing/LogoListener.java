@@ -222,18 +222,6 @@ public interface LogoListener extends ParseTreeListener {
 	 */
 	void exitTantque(LogoParser.TantqueContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code booleen}
-	 * labeled alternative in {@link LogoParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void enterBooleen(LogoParser.BooleenContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code booleen}
-	 * labeled alternative in {@link LogoParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void exitBooleen(LogoParser.BooleenContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code mult}
 	 * labeled alternative in {@link LogoParser#expr}.
 	 * @param ctx the parse tree
@@ -341,4 +329,16 @@ public interface LogoListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitHasard(LogoParser.HasardContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code booleen}
+	 * labeled alternative in {@link LogoParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterBooleen(LogoParser.BooleenContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code booleen}
+	 * labeled alternative in {@link LogoParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitBooleen(LogoParser.BooleenContext ctx);
 }

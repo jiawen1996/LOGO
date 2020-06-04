@@ -23,14 +23,14 @@ public class LogoParser extends Parser {
 		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
 		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, T__23=24, 
 		T__24=25, T__25=26, T__26=27, T__27=28, T__28=29, T__29=30, T__30=31, 
-		T__31=32, FLOAT=33, VAR=34, WS=35, COMMENT1=36, COMMENT2=37;
+		T__31=32, T__32=33, T__33=34, T__34=35, T__35=36, FLOAT=37, VAR=38, WS=39, 
+		COMMENT1=40, COMMENT2=41;
 	public static final int
 		RULE_programme = 0, RULE_liste_instructions = 1, RULE_bloc = 2, RULE_instruction = 3, 
-		RULE_condition = 4, RULE_expr = 5;
+		RULE_expr = 4;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"programme", "liste_instructions", "bloc", "instruction", "condition", 
-			"expr"
+			"programme", "liste_instructions", "bloc", "instruction", "expr"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -39,8 +39,9 @@ public class LogoParser extends Parser {
 		return new String[] {
 			null, "'['", "']'", "'repete'", "'av'", "'re'", "'td'", "'tg'", "'fcc'", 
 			"'fcap'", "'lc'", "'bc'", "'fpos'", "','", "'store'", "'move'", "'donne'", 
-			"'\"'", "'si'", "'tantque'", "'>'", "'<'", "'*'", "'/'", "'+'", "'-'", 
-			"'hasard'", "'cos'", "'('", "')'", "'sin'", "'loop'", "':'"
+			"'\"'", "'si'", "'tantque'", "'*'", "'/'", "'+'", "'-'", "'>'", "'<'", 
+			"'<='", "'>='", "'!='", "'=='", "'hasard'", "'cos'", "'('", "')'", "'sin'", 
+			"'loop'", "':'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -48,8 +49,8 @@ public class LogoParser extends Parser {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
 			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, null, null, null, null, null, null, null, "FLOAT", "VAR", 
-			"WS", "COMMENT1", "COMMENT2"
+			null, null, null, null, null, null, null, null, null, null, null, null, 
+			null, "FLOAT", "VAR", "WS", "COMMENT1", "COMMENT2"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -132,7 +133,7 @@ public class LogoParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(12);
+			setState(10);
 			liste_instructions();
 			}
 		}
@@ -180,17 +181,17 @@ public class LogoParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(15); 
+			setState(13); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(14);
+				setState(12);
 				instruction();
 				}
 				}
-				setState(17); 
+				setState(15); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << T__3) | (1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << T__7) | (1L << T__8) | (1L << T__9) | (1L << T__10) | (1L << T__11) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << T__17) | (1L << T__18))) != 0) );
@@ -245,11 +246,11 @@ public class LogoParser extends Parser {
 			_localctx = new CrochetContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(19);
+			setState(17);
 			match(T__0);
-			setState(20);
+			setState(18);
 			liste_instructions();
-			setState(21);
+			setState(19);
 			match(T__1);
 			}
 		}
@@ -435,8 +436,8 @@ public class LogoParser extends Parser {
 		}
 	}
 	public static class TantqueContext extends InstructionContext {
-		public ConditionContext condition() {
-			return getRuleContext(ConditionContext.class,0);
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
 		}
 		public BlocContext bloc() {
 			return getRuleContext(BlocContext.class,0);
@@ -498,8 +499,8 @@ public class LogoParser extends Parser {
 		}
 	}
 	public static class SiContext extends InstructionContext {
-		public ConditionContext condition() {
-			return getRuleContext(ConditionContext.class,0);
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
 		}
 		public List<BlocContext> bloc() {
 			return getRuleContexts(BlocContext.class);
@@ -568,20 +569,19 @@ public class LogoParser extends Parser {
 	public final InstructionContext instruction() throws RecognitionException {
 		InstructionContext _localctx = new InstructionContext(_ctx, getState());
 		enterRule(_localctx, 6, RULE_instruction);
-		int _la;
 		try {
-			setState(64);
+			setState(61);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__2:
 				_localctx = new RepeteContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(23);
+				setState(21);
 				match(T__2);
-				setState(24);
+				setState(22);
 				expr(0);
-				setState(25);
+				setState(23);
 				bloc();
 				}
 				break;
@@ -589,9 +589,9 @@ public class LogoParser extends Parser {
 				_localctx = new AvContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(27);
+				setState(25);
 				match(T__3);
-				setState(28);
+				setState(26);
 				expr(0);
 				}
 				break;
@@ -599,9 +599,9 @@ public class LogoParser extends Parser {
 				_localctx = new ReContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(29);
+				setState(27);
 				match(T__4);
-				setState(30);
+				setState(28);
 				expr(0);
 				}
 				break;
@@ -609,9 +609,9 @@ public class LogoParser extends Parser {
 				_localctx = new TdContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(31);
+				setState(29);
 				match(T__5);
-				setState(32);
+				setState(30);
 				expr(0);
 				}
 				break;
@@ -619,9 +619,9 @@ public class LogoParser extends Parser {
 				_localctx = new TgContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(33);
+				setState(31);
 				match(T__6);
-				setState(34);
+				setState(32);
 				expr(0);
 				}
 				break;
@@ -629,9 +629,9 @@ public class LogoParser extends Parser {
 				_localctx = new CouleurContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(35);
+				setState(33);
 				match(T__7);
-				setState(36);
+				setState(34);
 				expr(0);
 				}
 				break;
@@ -639,9 +639,9 @@ public class LogoParser extends Parser {
 				_localctx = new FixeCapContext(_localctx);
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(37);
+				setState(35);
 				match(T__8);
-				setState(38);
+				setState(36);
 				expr(0);
 				}
 				break;
@@ -649,7 +649,7 @@ public class LogoParser extends Parser {
 				_localctx = new LeveCrayonContext(_localctx);
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(39);
+				setState(37);
 				match(T__9);
 				}
 				break;
@@ -657,7 +657,7 @@ public class LogoParser extends Parser {
 				_localctx = new BaisseCrayonContext(_localctx);
 				enterOuterAlt(_localctx, 9);
 				{
-				setState(40);
+				setState(38);
 				match(T__10);
 				}
 				break;
@@ -665,17 +665,17 @@ public class LogoParser extends Parser {
 				_localctx = new FixeXYContext(_localctx);
 				enterOuterAlt(_localctx, 10);
 				{
-				setState(41);
+				setState(39);
 				match(T__11);
-				setState(42);
+				setState(40);
 				match(T__0);
+				setState(41);
+				expr(0);
+				setState(42);
+				match(T__12);
 				setState(43);
 				expr(0);
 				setState(44);
-				match(T__12);
-				setState(45);
-				expr(0);
-				setState(46);
 				match(T__1);
 				}
 				break;
@@ -683,7 +683,7 @@ public class LogoParser extends Parser {
 				_localctx = new StoreContext(_localctx);
 				enterOuterAlt(_localctx, 11);
 				{
-				setState(48);
+				setState(46);
 				match(T__13);
 				}
 				break;
@@ -691,7 +691,7 @@ public class LogoParser extends Parser {
 				_localctx = new MoveContext(_localctx);
 				enterOuterAlt(_localctx, 12);
 				{
-				setState(49);
+				setState(47);
 				match(T__14);
 				}
 				break;
@@ -699,13 +699,13 @@ public class LogoParser extends Parser {
 				_localctx = new AffecterContext(_localctx);
 				enterOuterAlt(_localctx, 13);
 				{
-				setState(50);
+				setState(48);
 				match(T__15);
-				setState(51);
+				setState(49);
 				match(T__16);
-				setState(52);
+				setState(50);
 				match(VAR);
-				setState(53);
+				setState(51);
 				expr(0);
 				}
 				break;
@@ -713,107 +713,30 @@ public class LogoParser extends Parser {
 				_localctx = new SiContext(_localctx);
 				enterOuterAlt(_localctx, 14);
 				{
-				setState(54);
+				setState(52);
 				match(T__17);
-				setState(55);
-				condition();
-				setState(56);
+				setState(53);
+				expr(0);
+				setState(54);
 				bloc();
-				setState(58);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				if (_la==T__0) {
-					{
-					setState(57);
-					bloc();
-					}
-				}
-
+				setState(55);
+				bloc();
 				}
 				break;
 			case T__18:
 				_localctx = new TantqueContext(_localctx);
 				enterOuterAlt(_localctx, 15);
 				{
-				setState(60);
+				setState(57);
 				match(T__18);
-				setState(61);
-				condition();
-				setState(62);
+				setState(58);
+				expr(0);
+				setState(59);
 				bloc();
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class ConditionContext extends ParserRuleContext {
-		public ConditionContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_condition; }
-	 
-		public ConditionContext() { }
-		public void copyFrom(ConditionContext ctx) {
-			super.copyFrom(ctx);
-		}
-	}
-	public static class BooleenContext extends ConditionContext {
-		public List<ExprContext> expr() {
-			return getRuleContexts(ExprContext.class);
-		}
-		public ExprContext expr(int i) {
-			return getRuleContext(ExprContext.class,i);
-		}
-		public BooleenContext(ConditionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterBooleen(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitBooleen(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoVisitor ) return ((LogoVisitor<? extends T>)visitor).visitBooleen(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final ConditionContext condition() throws RecognitionException {
-		ConditionContext _localctx = new ConditionContext(_ctx, getState());
-		enterRule(_localctx, 8, RULE_condition);
-		int _la;
-		try {
-			_localctx = new BooleenContext(_localctx);
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(66);
-			expr(0);
-			setState(67);
-			_la = _input.LA(1);
-			if ( !(_la==T__19 || _la==T__20) ) {
-			_errHandler.recoverInline(this);
-			}
-			else {
-				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-				_errHandler.reportMatch(this);
-				consume();
-			}
-			setState(68);
-			expr(0);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1008,6 +931,28 @@ public class LogoParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class BooleenContext extends ExprContext {
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
+		}
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
+		}
+		public BooleenContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterBooleen(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitBooleen(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoVisitor ) return ((LogoVisitor<? extends T>)visitor).visitBooleen(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 
 	public final ExprContext expr() throws RecognitionException {
 		return expr(0);
@@ -1018,58 +963,58 @@ public class LogoParser extends Parser {
 		int _parentState = getState();
 		ExprContext _localctx = new ExprContext(_ctx, _parentState);
 		ExprContext _prevctx = _localctx;
-		int _startState = 10;
-		enterRecursionRule(_localctx, 10, RULE_expr, _p);
+		int _startState = 8;
+		enterRecursionRule(_localctx, 8, RULE_expr, _p);
 		int _la;
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(91);
+			setState(84);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case T__25:
+			case T__29:
 				{
 				_localctx = new HasardContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
 
-				setState(71);
-				match(T__25);
+				setState(64);
+				match(T__29);
 				{
-				setState(72);
+				setState(65);
 				expr(0);
 				}
 				}
 				break;
-			case T__26:
+			case T__30:
 				{
 				_localctx = new CosContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(73);
-				match(T__26);
-				setState(74);
-				match(T__27);
-				setState(75);
+				setState(66);
+				match(T__30);
+				setState(67);
+				match(T__31);
+				setState(68);
 				expr(0);
-				setState(76);
-				match(T__28);
+				setState(69);
+				match(T__32);
 				}
 				break;
-			case T__29:
+			case T__33:
 				{
 				_localctx = new SinContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(78);
-				match(T__29);
-				setState(79);
-				match(T__27);
-				setState(80);
+				setState(71);
+				match(T__33);
+				setState(72);
+				match(T__31);
+				setState(73);
 				expr(0);
-				setState(81);
-				match(T__28);
+				setState(74);
+				match(T__32);
 				}
 				break;
 			case FLOAT:
@@ -1077,65 +1022,85 @@ public class LogoParser extends Parser {
 				_localctx = new FloatContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(83);
+				setState(76);
 				match(FLOAT);
 				}
 				break;
-			case T__30:
+			case T__34:
 				{
 				_localctx = new LoopContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(84);
-				match(T__30);
+				setState(77);
+				match(T__34);
 				}
 				break;
-			case T__31:
+			case T__35:
 				{
 				_localctx = new AppelleContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(85);
-				match(T__31);
-				setState(86);
+				setState(78);
+				match(T__35);
+				setState(79);
 				match(VAR);
 				}
 				break;
-			case T__27:
+			case T__31:
 				{
 				_localctx = new ParentheseContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(87);
-				match(T__27);
-				setState(88);
+				setState(80);
+				match(T__31);
+				setState(81);
 				expr(0);
-				setState(89);
-				match(T__28);
+				setState(82);
+				match(T__32);
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(101);
+			setState(97);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(99);
+					setState(95);
 					_errHandler.sync(this);
-					switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
+					switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
 					case 1:
 						{
 						_localctx = new MultContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(93);
+						setState(86);
+						if (!(precpred(_ctx, 10))) throw new FailedPredicateException(this, "precpred(_ctx, 10)");
+						setState(87);
+						_la = _input.LA(1);
+						if ( !(_la==T__19 || _la==T__20) ) {
+						_errHandler.recoverInline(this);
+						}
+						else {
+							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+							_errHandler.reportMatch(this);
+							consume();
+						}
+						setState(88);
+						expr(11);
+						}
+						break;
+					case 2:
+						{
+						_localctx = new SumContext(new ExprContext(_parentctx, _parentState));
+						pushNewRecursionContext(_localctx, _startState, RULE_expr);
+						setState(89);
 						if (!(precpred(_ctx, 9))) throw new FailedPredicateException(this, "precpred(_ctx, 9)");
-						setState(94);
+						setState(90);
 						_la = _input.LA(1);
 						if ( !(_la==T__21 || _la==T__22) ) {
 						_errHandler.recoverInline(this);
@@ -1145,19 +1110,19 @@ public class LogoParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(95);
+						setState(91);
 						expr(10);
 						}
 						break;
-					case 2:
+					case 3:
 						{
-						_localctx = new SumContext(new ExprContext(_parentctx, _parentState));
+						_localctx = new BooleenContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(96);
+						setState(92);
 						if (!(precpred(_ctx, 8))) throw new FailedPredicateException(this, "precpred(_ctx, 8)");
-						setState(97);
+						setState(93);
 						_la = _input.LA(1);
-						if ( !(_la==T__23 || _la==T__24) ) {
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__23) | (1L << T__24) | (1L << T__25) | (1L << T__26) | (1L << T__27) | (1L << T__28))) != 0)) ) {
 						_errHandler.recoverInline(this);
 						}
 						else {
@@ -1165,16 +1130,16 @@ public class LogoParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(98);
+						setState(94);
 						expr(9);
 						}
 						break;
 					}
 					} 
 				}
-				setState(103);
+				setState(99);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
 			}
 			}
 		}
@@ -1191,7 +1156,7 @@ public class LogoParser extends Parser {
 
 	public boolean sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
-		case 5:
+		case 4:
 			return expr_sempred((ExprContext)_localctx, predIndex);
 		}
 		return true;
@@ -1199,42 +1164,43 @@ public class LogoParser extends Parser {
 	private boolean expr_sempred(ExprContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 0:
-			return precpred(_ctx, 9);
+			return precpred(_ctx, 10);
 		case 1:
+			return precpred(_ctx, 9);
+		case 2:
 			return precpred(_ctx, 8);
 		}
 		return true;
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\'k\4\2\t\2\4\3\t"+
-		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\3\2\3\2\3\3\6\3\22\n\3\r\3\16\3\23"+
-		"\3\4\3\4\3\4\3\4\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3"+
-		"\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5"+
-		"\3\5\3\5\3\5\3\5\5\5=\n\5\3\5\3\5\3\5\3\5\5\5C\n\5\3\6\3\6\3\6\3\6\3\7"+
-		"\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3"+
-		"\7\3\7\3\7\5\7^\n\7\3\7\3\7\3\7\3\7\3\7\3\7\7\7f\n\7\f\7\16\7i\13\7\3"+
-		"\7\2\3\f\b\2\4\6\b\n\f\2\5\3\2\26\27\3\2\30\31\3\2\32\33\2|\2\16\3\2\2"+
-		"\2\4\21\3\2\2\2\6\25\3\2\2\2\bB\3\2\2\2\nD\3\2\2\2\f]\3\2\2\2\16\17\5"+
-		"\4\3\2\17\3\3\2\2\2\20\22\5\b\5\2\21\20\3\2\2\2\22\23\3\2\2\2\23\21\3"+
-		"\2\2\2\23\24\3\2\2\2\24\5\3\2\2\2\25\26\7\3\2\2\26\27\5\4\3\2\27\30\7"+
-		"\4\2\2\30\7\3\2\2\2\31\32\7\5\2\2\32\33\5\f\7\2\33\34\5\6\4\2\34C\3\2"+
-		"\2\2\35\36\7\6\2\2\36C\5\f\7\2\37 \7\7\2\2 C\5\f\7\2!\"\7\b\2\2\"C\5\f"+
-		"\7\2#$\7\t\2\2$C\5\f\7\2%&\7\n\2\2&C\5\f\7\2\'(\7\13\2\2(C\5\f\7\2)C\7"+
-		"\f\2\2*C\7\r\2\2+,\7\16\2\2,-\7\3\2\2-.\5\f\7\2./\7\17\2\2/\60\5\f\7\2"+
-		"\60\61\7\4\2\2\61C\3\2\2\2\62C\7\20\2\2\63C\7\21\2\2\64\65\7\22\2\2\65"+
-		"\66\7\23\2\2\66\67\7$\2\2\67C\5\f\7\289\7\24\2\29:\5\n\6\2:<\5\6\4\2;"+
-		"=\5\6\4\2<;\3\2\2\2<=\3\2\2\2=C\3\2\2\2>?\7\25\2\2?@\5\n\6\2@A\5\6\4\2"+
-		"AC\3\2\2\2B\31\3\2\2\2B\35\3\2\2\2B\37\3\2\2\2B!\3\2\2\2B#\3\2\2\2B%\3"+
-		"\2\2\2B\'\3\2\2\2B)\3\2\2\2B*\3\2\2\2B+\3\2\2\2B\62\3\2\2\2B\63\3\2\2"+
-		"\2B\64\3\2\2\2B8\3\2\2\2B>\3\2\2\2C\t\3\2\2\2DE\5\f\7\2EF\t\2\2\2FG\5"+
-		"\f\7\2G\13\3\2\2\2HI\b\7\1\2IJ\7\34\2\2J^\5\f\7\2KL\7\35\2\2LM\7\36\2"+
-		"\2MN\5\f\7\2NO\7\37\2\2O^\3\2\2\2PQ\7 \2\2QR\7\36\2\2RS\5\f\7\2ST\7\37"+
-		"\2\2T^\3\2\2\2U^\7#\2\2V^\7!\2\2WX\7\"\2\2X^\7$\2\2YZ\7\36\2\2Z[\5\f\7"+
-		"\2[\\\7\37\2\2\\^\3\2\2\2]H\3\2\2\2]K\3\2\2\2]P\3\2\2\2]U\3\2\2\2]V\3"+
-		"\2\2\2]W\3\2\2\2]Y\3\2\2\2^g\3\2\2\2_`\f\13\2\2`a\t\3\2\2af\5\f\7\fbc"+
-		"\f\n\2\2cd\t\4\2\2df\5\f\7\13e_\3\2\2\2eb\3\2\2\2fi\3\2\2\2ge\3\2\2\2"+
-		"gh\3\2\2\2h\r\3\2\2\2ig\3\2\2\2\b\23<B]eg";
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3+g\4\2\t\2\4\3\t\3"+
+		"\4\4\t\4\4\5\t\5\4\6\t\6\3\2\3\2\3\3\6\3\20\n\3\r\3\16\3\21\3\4\3\4\3"+
+		"\4\3\4\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5"+
+		"\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3"+
+		"\5\3\5\3\5\3\5\3\5\3\5\3\5\5\5@\n\5\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3"+
+		"\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\5\6W\n\6\3\6\3\6\3"+
+		"\6\3\6\3\6\3\6\3\6\3\6\3\6\7\6b\n\6\f\6\16\6e\13\6\3\6\2\3\n\7\2\4\6\b"+
+		"\n\2\5\3\2\26\27\3\2\30\31\3\2\32\37\2y\2\f\3\2\2\2\4\17\3\2\2\2\6\23"+
+		"\3\2\2\2\b?\3\2\2\2\nV\3\2\2\2\f\r\5\4\3\2\r\3\3\2\2\2\16\20\5\b\5\2\17"+
+		"\16\3\2\2\2\20\21\3\2\2\2\21\17\3\2\2\2\21\22\3\2\2\2\22\5\3\2\2\2\23"+
+		"\24\7\3\2\2\24\25\5\4\3\2\25\26\7\4\2\2\26\7\3\2\2\2\27\30\7\5\2\2\30"+
+		"\31\5\n\6\2\31\32\5\6\4\2\32@\3\2\2\2\33\34\7\6\2\2\34@\5\n\6\2\35\36"+
+		"\7\7\2\2\36@\5\n\6\2\37 \7\b\2\2 @\5\n\6\2!\"\7\t\2\2\"@\5\n\6\2#$\7\n"+
+		"\2\2$@\5\n\6\2%&\7\13\2\2&@\5\n\6\2\'@\7\f\2\2(@\7\r\2\2)*\7\16\2\2*+"+
+		"\7\3\2\2+,\5\n\6\2,-\7\17\2\2-.\5\n\6\2./\7\4\2\2/@\3\2\2\2\60@\7\20\2"+
+		"\2\61@\7\21\2\2\62\63\7\22\2\2\63\64\7\23\2\2\64\65\7(\2\2\65@\5\n\6\2"+
+		"\66\67\7\24\2\2\678\5\n\6\289\5\6\4\29:\5\6\4\2:@\3\2\2\2;<\7\25\2\2<"+
+		"=\5\n\6\2=>\5\6\4\2>@\3\2\2\2?\27\3\2\2\2?\33\3\2\2\2?\35\3\2\2\2?\37"+
+		"\3\2\2\2?!\3\2\2\2?#\3\2\2\2?%\3\2\2\2?\'\3\2\2\2?(\3\2\2\2?)\3\2\2\2"+
+		"?\60\3\2\2\2?\61\3\2\2\2?\62\3\2\2\2?\66\3\2\2\2?;\3\2\2\2@\t\3\2\2\2"+
+		"AB\b\6\1\2BC\7 \2\2CW\5\n\6\2DE\7!\2\2EF\7\"\2\2FG\5\n\6\2GH\7#\2\2HW"+
+		"\3\2\2\2IJ\7$\2\2JK\7\"\2\2KL\5\n\6\2LM\7#\2\2MW\3\2\2\2NW\7\'\2\2OW\7"+
+		"%\2\2PQ\7&\2\2QW\7(\2\2RS\7\"\2\2ST\5\n\6\2TU\7#\2\2UW\3\2\2\2VA\3\2\2"+
+		"\2VD\3\2\2\2VI\3\2\2\2VN\3\2\2\2VO\3\2\2\2VP\3\2\2\2VR\3\2\2\2Wc\3\2\2"+
+		"\2XY\f\f\2\2YZ\t\2\2\2Zb\5\n\6\r[\\\f\13\2\2\\]\t\3\2\2]b\5\n\6\f^_\f"+
+		"\n\2\2_`\t\4\2\2`b\5\n\6\13aX\3\2\2\2a[\3\2\2\2a^\3\2\2\2be\3\2\2\2ca"+
+		"\3\2\2\2cd\3\2\2\2d\13\3\2\2\2ec\3\2\2\2\7\21?Vac";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

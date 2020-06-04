@@ -36,21 +36,18 @@ instruction :
  | 'store' # store
  | 'move' # move
  | 'donne' '"' VAR expr # affecter
- | 'si' condition bloc bloc ? # si
- | 'tantque' condition bloc # tantque
-; 
-
-condition:
-  expr ('>' | '<' ) expr # booleen
+ | 'si' expr bloc bloc # si
+ | 'tantque' expr bloc # tantque
 ;
 
 
 expr:
 	expr ('*' | '/' ) expr # mult
  |  expr ('+' | '-' ) expr # sum
+ |  expr ('>' | '<' | '<=' | '>=' | '!=' | '==') expr # booleen
  |	'hasard' (expr) # hasard
- |	'cos' '(' expr ')' # cos	
- |	'sin' '(' expr ')' # sin	
+ |	'cos' '(' expr ')' # cos
+ |	'sin' '(' expr ')' # sin
  |  FLOAT # float
  |	'loop' # loop
  |	':'VAR # appelle
