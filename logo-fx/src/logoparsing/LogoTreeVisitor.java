@@ -393,9 +393,7 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
         Binome value = evaluateExpr(ctx.expr());
         if (value._1 == 0) {
             String nomVar = ctx.VAR().getText();
-            if (!tableSymb.containsKey(nomVar)) {
-                tableSymb.creerVar(nomVar, value._2);
-            }
+            tableSymb.creerVar(nomVar, value._2);
             log.setValue("Bien affecter la variable " + nomVar + " avec " + value._2);
             log.setValue("\n");
 
