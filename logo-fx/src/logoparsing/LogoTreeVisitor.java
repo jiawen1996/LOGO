@@ -427,9 +427,9 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
                 } else if (ctx.getChild(1).getText().equals(">=")) {
                     r = left._2 >= right._2 ? 1 : 0;
                 } else if (ctx.getChild(1).getText().equals("==")) {
-                    r = left._2 == right._2 ? 1 : 0;
+                    r = left._2.equals(right._2) ? 1 : 0;
                 } else if (ctx.getChild(1).getText().equals("!=")) {
-                    r = left._2 != right._2 ? 1 : 0;
+                    r = !left._2.equals(right._2) ? 1 : 0;
                 }
                 setExprValue(ctx, (double) r);
             } else
