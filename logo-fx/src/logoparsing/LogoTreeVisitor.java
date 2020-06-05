@@ -13,11 +13,9 @@ import logoparsing.LogoParser.AffecterContext;
 import logoparsing.LogoParser.AppelleContext;
 import logoparsing.LogoParser.AvContext;
 import logoparsing.LogoParser.BaisseCrayonContext;
-import logoparsing.LogoParser.BlocContext;
 import logoparsing.LogoParser.BooleenContext;
 import logoparsing.LogoParser.CosContext;
 import logoparsing.LogoParser.CouleurContext;
-import logoparsing.LogoParser.CrochetContext;
 import logoparsing.LogoParser.FixeCapContext;
 import logoparsing.LogoParser.FixeXYContext;
 import logoparsing.LogoParser.FloatContext;
@@ -78,21 +76,12 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
         return res;
     }
 
-    // 得到解析代表循环的子树的结果
-    private Binome evaluateBloc(ParseTree bloc) {
-        Binome res = new Binome();
-        // 开始访问bloc子树
-        res._1 = visit(bloc);
-        // 在这里不用存值
-        res._2 = res._1 == 0 ? getExprValue(bloc) : -1;
-        return res;
-    }
 
     private Binome evaluateLoop(ParseTree loop) {
         Binome res = new Binome();
         // 开始访问bloc子树
         ParseTree parentBloc = loop.getParent();
-        while (!(parentBloc instanceof BlocContext)) {
+        while (!(parentBloc instanceof Liste_instructionsContext)) {
             parentBloc = parentBloc.getParent();
         }
 
@@ -344,8 +333,8 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
             if (expr._1 == 0) {
                 compteur = (int) Math.round(expr._2);
                 for (int i = 1; i < compteur + 1; i++) {
-                    setExprValue(ctx.bloc(), i);
-                    bloc = evaluateBloc(ctx.bloc());
+                    setExprValue(ctx.liste_instructions(), i);
+                    bloc._1 = visit(ctx.liste_instructions());
                 }
             } else {
                 return expr._1 == 0 ? bloc._1 : expr._1;
@@ -364,13 +353,6 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
         return 0;
     }
 
-    @Override
-    public Integer visitCrochet(CrochetContext ctx) {
-        Binome bilan = new Binome();
-        // 访问代表循环的子树
-        bilan._1 = visit(ctx.liste_instructions());
-        return bilan._1;
-    }
 
     @Override
     public Integer visitFixeXY(FixeXYContext ctx) {
@@ -463,7 +445,7 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
         Binome condition = evaluateBooleen(ctx.expr());
         Binome bloc = new Binome();
         if (condition._1 == 0) {
-            bloc = condition._2 == 1 ? evaluateBloc(ctx.bloc(0)) : evaluateBloc(ctx.bloc(1));
+            bloc._1 = condition._2 == 1 ? visit(ctx.liste_instructions(0)) : visit(ctx.liste_instructions(1));
         }
         return bloc._1;
     }
@@ -473,8 +455,7 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
         Binome condition = evaluateBooleen(ctx.expr());
         Binome bloc = new Binome();
         while (condition._1 == 0 && condition._2 == 1) {
-            setExprValue(ctx.bloc(), condition._2);
-            bloc = evaluateBloc(ctx.bloc());
+            bloc._1 = visit(ctx.liste_instructions());
             condition = evaluateBooleen(ctx.expr());
         }
         return bloc._1;

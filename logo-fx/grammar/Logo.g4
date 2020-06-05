@@ -18,12 +18,8 @@ liste_instructions :
  (instruction)+    
 ;
 
-bloc :
-	'[' liste_instructions ']' # crochet
-;
-
 instruction :
-	'repete' expr bloc # repete
+	'repete' expr '[' liste_instructions ']' # repete
  |  'av' expr # av
  | 're' expr # re
  | 'td' expr # td 
@@ -36,8 +32,8 @@ instruction :
  | 'store' # store
  | 'move' # move
  | 'donne' '"' VAR expr # affecter
- | 'si' expr bloc bloc # si
- | 'tantque' expr bloc # tantque
+ | 'si' expr '[' liste_instructions ']' ('[' liste_instructions ']')? # si
+ | 'tantque' expr '[' liste_instructions ']' # tantque
 ;
 
 

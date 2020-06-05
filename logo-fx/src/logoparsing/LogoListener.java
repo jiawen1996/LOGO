@@ -30,18 +30,6 @@ public interface LogoListener extends ParseTreeListener {
 	 */
 	void exitListe_instructions(LogoParser.Liste_instructionsContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code crochet}
-	 * labeled alternative in {@link LogoParser#bloc}.
-	 * @param ctx the parse tree
-	 */
-	void enterCrochet(LogoParser.CrochetContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code crochet}
-	 * labeled alternative in {@link LogoParser#bloc}.
-	 * @param ctx the parse tree
-	 */
-	void exitCrochet(LogoParser.CrochetContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code repete}
 	 * labeled alternative in {@link LogoParser#instruction}.
 	 * @param ctx the parse tree

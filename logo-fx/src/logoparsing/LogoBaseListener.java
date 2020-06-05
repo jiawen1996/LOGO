@@ -42,18 +42,6 @@ public class LogoBaseListener implements LogoListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCrochet(LogoParser.CrochetContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitCrochet(LogoParser.CrochetContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterRepete(LogoParser.RepeteContext ctx) { }
 	/**
 	 * {@inheritDoc}

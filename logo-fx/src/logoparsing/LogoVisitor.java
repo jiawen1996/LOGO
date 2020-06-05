@@ -25,13 +25,6 @@ public interface LogoVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitListe_instructions(LogoParser.Liste_instructionsContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code crochet}
-	 * labeled alternative in {@link LogoParser#bloc}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCrochet(LogoParser.CrochetContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code repete}
 	 * labeled alternative in {@link LogoParser#instruction}.
 	 * @param ctx the parse tree
