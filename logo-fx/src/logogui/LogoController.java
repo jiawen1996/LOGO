@@ -76,8 +76,8 @@ public class LogoController {
 		}
 	}
    private ChangeListener<String> appendLog() {
-	   ChangeListener<String> f = (observable, oldVal, newVal) -> logarea.appendText(newVal);
-	   //ChangeListener<String> f = (observable, oldVal, newVal) -> System.out.println(newVal);
+//	   ChangeListener<String> f = (observable, oldVal, newVal) -> logarea.appendText(newVal);
+	   ChangeListener<String> f = (observable, oldVal, newVal) -> System.out.println(newVal);
 	   return f;
    }
    private void traceLine(GraphParameter gp) {

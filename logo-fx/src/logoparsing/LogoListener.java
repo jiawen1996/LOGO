@@ -10,6 +10,40 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface LogoListener extends ParseTreeListener {
 	/**
+	 * Enter a parse tree produced by the {@code procedure}
+	 * labeled alternative in {@link LogoParser#declaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterProcedure(LogoParser.ProcedureContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code procedure}
+	 * labeled alternative in {@link LogoParser#declaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitProcedure(LogoParser.ProcedureContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code fonction}
+	 * labeled alternative in {@link LogoParser#declaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterFonction(LogoParser.FonctionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code fonction}
+	 * labeled alternative in {@link LogoParser#declaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitFonction(LogoParser.FonctionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LogoParser#liste_parametres}.
+	 * @param ctx the parse tree
+	 */
+	void enterListe_parametres(LogoParser.Liste_parametresContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LogoParser#liste_parametres}.
+	 * @param ctx the parse tree
+	 */
+	void exitListe_parametres(LogoParser.Liste_parametresContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link LogoParser#programme}.
 	 * @param ctx the parse tree
 	 */
@@ -209,6 +243,18 @@ public interface LogoListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitTantque(LogoParser.TantqueContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code executeProcedure}
+	 * labeled alternative in {@link LogoParser#instruction}.
+	 * @param ctx the parse tree
+	 */
+	void enterExecuteProcedure(LogoParser.ExecuteProcedureContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code executeProcedure}
+	 * labeled alternative in {@link LogoParser#instruction}.
+	 * @param ctx the parse tree
+	 */
+	void exitExecuteProcedure(LogoParser.ExecuteProcedureContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code mult}
 	 * labeled alternative in {@link LogoParser#expr}.

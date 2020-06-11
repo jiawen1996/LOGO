@@ -13,6 +13,26 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface LogoVisitor<T> extends ParseTreeVisitor<T> {
 	/**
+	 * Visit a parse tree produced by the {@code procedure}
+	 * labeled alternative in {@link LogoParser#declaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitProcedure(LogoParser.ProcedureContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code fonction}
+	 * labeled alternative in {@link LogoParser#declaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFonction(LogoParser.FonctionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LogoParser#liste_parametres}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListe_parametres(LogoParser.Liste_parametresContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link LogoParser#programme}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -129,6 +149,13 @@ public interface LogoVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitTantque(LogoParser.TantqueContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code executeProcedure}
+	 * labeled alternative in {@link LogoParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExecuteProcedure(LogoParser.ExecuteProcedureContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code mult}
 	 * labeled alternative in {@link LogoParser#expr}.

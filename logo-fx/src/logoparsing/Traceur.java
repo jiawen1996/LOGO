@@ -17,7 +17,7 @@ import logogui.GraphParameter;
 
 public class Traceur {
     private Color couleur;
-    private double initx = 450, inity = 150; // position initiale
+    private double initx = 450, inity = 250; // position initiale
     private double posx = initx, posy = inity; // position courante
     private double angle = 90;
     private double teta;

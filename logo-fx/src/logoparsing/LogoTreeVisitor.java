@@ -2,7 +2,9 @@ package logoparsing;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
@@ -39,14 +41,21 @@ import logoparsing.LogoParser.TgContext;
 public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
     Traceur traceur;
     StringProperty log = new SimpleStringProperty();
-    TableSymboles tableSymb;
+    Stack<TableSymboles> pileExecution;
+    TableSymboles tableSymbGlobale;
+    //用来保存VAR和其对应的Procedure
+    Map<String, Procedure> tableProcedures;
 
     // 用来保留两位小数
     DecimalFormat df = new DecimalFormat("#.00");
 
+
     public LogoTreeVisitor() {
         this.traceur = new Traceur();
-        this.tableSymb = new TableSymboles();
+        this.tableSymbGlobale = new TableSymboles();
+        this.pileExecution = new Stack<>();
+        this.tableProcedures = new HashMap<>();
+        pileExecution.push(tableSymbGlobale);
     }
 
     public StringProperty logProperty() {
@@ -189,6 +198,49 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
             return -1;
         }
 
+    }
+
+    @Override
+    public Integer visitListe_parametres(LogoParser.Liste_parametresContext ctx) {
+        List<ParseTree> listChildren = ctx.children;
+        TableSymboles currentTableSymboles = pileExecution.pop();
+        for (ParseTree child : listChildren) {
+            String currentNomParam = child.getText();
+            currentTableSymboles.creerVar(currentNomParam, null);
+            currentTableSymboles.addNomParam(currentNomParam);
+        }
+        pileExecution.push(currentTableSymboles);
+        return 0;
+    }
+
+    @Override
+    public Integer visitProcedure(LogoParser.ProcedureContext ctx) {
+        String nomProcedure = ctx.VAR().getText();
+        Integer createListeParamsSuccess;
+        TableSymboles currentTableSymboles = new TableSymboles();
+        pileExecution.push(currentTableSymboles);
+        Liste_instructionsContext listeInstructions = ctx.liste_instructions();
+        //通过执行栈存储参数列表
+        createListeParamsSuccess = visit(ctx.liste_parametres());
+        currentTableSymboles = pileExecution.pop();
+        if (createListeParamsSuccess == 0) {
+            Procedure newProcedure = new Procedure(nomProcedure, currentTableSymboles, listeInstructions);
+            tableProcedures.put(nomProcedure, newProcedure);
+            return 0;
+        } else return -1;
+    }
+
+    @Override
+    public Integer visitExecuteProcedure(LogoParser.ExecuteProcedureContext ctx) {
+        String nomProcedure = ctx.VAR().getText();
+        Procedure currentProcedure = tableProcedures.get(nomProcedure);
+        Liste_instructionsContext listeInstructions = currentProcedure.getListeInstructions();
+        TableSymboles tableSymbolesLocale = currentProcedure.getTableSymbLocale();
+        List<LogoParser.ExprContext> listeParamsValues = ctx.expr();
+        for (LogoParser.ExprContext currentExpr : listeParamsValues) {
+            
+        }
+        return 0;
     }
 
     @Override
@@ -393,7 +445,7 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
         Binome value = evaluateExpr(ctx.expr());
         if (value._1 == 0) {
             String nomVar = ctx.VAR().getText();
-            tableSymb.creerVar(nomVar, value._2);
+            tableSymbGlobale.creerVar(nomVar, value._2);
             log.setValue("Bien affecter la variable " + nomVar + " avec " + value._2);
             log.setValue("\n");
 
@@ -404,7 +456,7 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
     @Override
     public Integer visitAppelle(AppelleContext ctx) {
         String varText = ctx.VAR().getText();
-        setExprValue(ctx, tableSymb.getValeur(varText));
+        setExprValue(ctx, tableSymbGlobale.getValeur(varText));
         return 0;
     }
 

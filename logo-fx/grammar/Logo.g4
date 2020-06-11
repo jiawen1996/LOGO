@@ -10,8 +10,17 @@ WS : [ \t\r\n]+ -> skip ;
 COMMENT1 : '//' .*? [\r\n]+ -> skip;
 COMMENT2 : '/*' .*? '*/' -> skip;
 
+declaration :
+   'pour' VAR (liste_parametres)? liste_instructions 'fin' # procedure
+ | 'pour' VAR (liste_parametres)? (liste_instructions)? 'rends' expr 'fin' # fonction
+;
+
+liste_parametres :
+   (':' VAR)+
+;
+
 programme :
- liste_instructions  
+ (declaration)* liste_instructions
 ;
 
 liste_instructions :   
@@ -34,6 +43,7 @@ instruction :
  | 'donne' '"' VAR expr # affecter
  | 'si' expr '[' liste_instructions ']' ('[' liste_instructions ']')? # si
  | 'tantque' expr '[' liste_instructions ']' # tantque
+ | VAR '(' (expr)* ')' # executeProcedure
 ;
 
 
