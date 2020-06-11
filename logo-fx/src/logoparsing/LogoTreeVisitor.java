@@ -37,6 +37,7 @@ import logoparsing.LogoParser.SumContext;
 import logoparsing.LogoParser.TantqueContext;
 import logoparsing.LogoParser.TdContext;
 import logoparsing.LogoParser.TgContext;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
     Traceur traceur;
@@ -202,9 +203,9 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 
     @Override
     public Integer visitListe_parametres(LogoParser.Liste_parametresContext ctx) {
-        List<ParseTree> listChildren = ctx.children;
+        List<TerminalNode> listChildren = ctx.VAR();
         TableSymboles currentTableSymboles = pileExecution.pop();
-        for (ParseTree child : listChildren) {
+        for (TerminalNode child : listChildren) {
             String currentNomParam = child.getText();
             currentTableSymboles.creerVar(currentNomParam, null);
             currentTableSymboles.addNomParam(currentNomParam);
@@ -217,30 +218,60 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
     public Integer visitProcedure(LogoParser.ProcedureContext ctx) {
         String nomProcedure = ctx.VAR().getText();
         Integer createListeParamsSuccess;
+        //创建一个作用域，然后推入执行栈中，方便参数列表把记住所有的参数名
         TableSymboles currentTableSymboles = new TableSymboles();
         pileExecution.push(currentTableSymboles);
+
         Liste_instructionsContext listeInstructions = ctx.liste_instructions();
         //通过执行栈存储参数列表
         createListeParamsSuccess = visit(ctx.liste_parametres());
+
+        //获取到参数名之后，创建相应的procedure实例
         currentTableSymboles = pileExecution.pop();
         if (createListeParamsSuccess == 0) {
             Procedure newProcedure = new Procedure(nomProcedure, currentTableSymboles, listeInstructions);
             tableProcedures.put(nomProcedure, newProcedure);
+
             return 0;
         } else return -1;
     }
 
     @Override
     public Integer visitExecuteProcedure(LogoParser.ExecuteProcedureContext ctx) {
+        //拿到过程的名字
         String nomProcedure = ctx.VAR().getText();
+
+
         Procedure currentProcedure = tableProcedures.get(nomProcedure);
         Liste_instructionsContext listeInstructions = currentProcedure.getListeInstructions();
+
+        //在执行过程的时候需要把作用域推入执行栈
         TableSymboles tableSymbolesLocale = currentProcedure.getTableSymbLocale();
+
+        List<String> nomsParams = tableSymbolesLocale.getListeNomsParams();
         List<LogoParser.ExprContext> listeParamsValues = ctx.expr();
+        int index = 0;
+
+        //给符号表中的参数赋值
         for (LogoParser.ExprContext currentExpr : listeParamsValues) {
-            
+            if(index < nomsParams.size()) {
+                Binome expr = evaluateExpr(currentExpr);
+                Double exprValue = expr._2;
+                String nomParam = nomsParams.get(0);
+                tableSymbolesLocale.creerVar(nomParam, exprValue);
+                index++;
+            } else return -1;//在调用函数的时候参数的个数和申明函数时不一样
         }
-        return 0;
+        pileExecution.push(tableSymbolesLocale);
+
+        //开始执行语句
+        int doesSuccess = visit(listeInstructions);
+        if(doesSuccess == 0) {
+            pileExecution.pop();
+            return 0;
+        }
+        else return -2;
+
     }
 
     @Override
@@ -441,22 +472,39 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 
     @Override
     public Integer visitAffecter(AffecterContext ctx) {
+        //先把作用域从执行栈里取出
+        TableSymboles currentTableSymboles;
+        if (!pileExecution.empty()) {
+            currentTableSymboles = pileExecution.pop();
+        } else {
+            System.out.println("执行栈为空");
+            return -1;
+        }
+
         // 访问var下的子结点，并返回是否执行成功
         Binome value = evaluateExpr(ctx.expr());
         if (value._1 == 0) {
             String nomVar = ctx.VAR().getText();
-            tableSymbGlobale.creerVar(nomVar, value._2);
+            currentTableSymboles.creerVar(nomVar, value._2);
             log.setValue("Bien affecter la variable " + nomVar + " avec " + value._2);
             log.setValue("\n");
-
         }
+        pileExecution.push(currentTableSymboles);
         return 0;
     }
 
     @Override
     public Integer visitAppelle(AppelleContext ctx) {
         String varText = ctx.VAR().getText();
-        setExprValue(ctx, tableSymbGlobale.getValeur(varText));
+        TableSymboles currentTableSymboles;
+        if (!pileExecution.empty()) {
+            currentTableSymboles = pileExecution.pop();
+        } else {
+            System.out.println("执行栈为空");
+            return -1;
+        }
+        setExprValue(ctx, currentTableSymboles.getValeur(varText));
+        pileExecution.push(currentTableSymboles);
         return 0;
     }
 
