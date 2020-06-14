@@ -12,7 +12,7 @@ COMMENT2 : '/*' .*? '*/' -> skip;
 
 declaration :
    'pour' VAR (liste_parametres)? liste_instructions 'fin' # procedure
- | 'pour' VAR (liste_parametres)? (liste_instructions)? 'rends' expr 'fin' # fonction
+ | 'pour' 'function' VAR (liste_parametres)? (liste_instructions)? 'rends' expr 'fin' # fonction
 ;
 
 liste_parametres :
