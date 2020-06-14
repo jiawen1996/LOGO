@@ -217,14 +217,20 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
     @Override
     public Integer visitProcedure(LogoParser.ProcedureContext ctx) {
         String nomProcedure = ctx.VAR().getText();
-        Integer createListeParamsSuccess;
         //创建一个作用域，然后推入执行栈中，方便参数列表把记住所有的参数名
         TableSymboles currentTableSymboles = new TableSymboles();
         pileExecution.push(currentTableSymboles);
 
         Liste_instructionsContext listeInstructions = ctx.liste_instructions();
         //通过执行栈存储参数列表
-        createListeParamsSuccess = visit(ctx.liste_parametres());
+        Integer createListeParamsSuccess;
+        if(ctx.liste_parametres() != null) {
+            //如果有参数传进来
+            createListeParamsSuccess = visit(ctx.liste_parametres());
+        }else {
+            //如果没有参数
+            createListeParamsSuccess = 0;
+        }
 
         //获取到参数名之后，创建相应的procedure实例
         currentTableSymboles = pileExecution.pop();
@@ -477,7 +483,6 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
         if (!pileExecution.empty()) {
             currentTableSymboles = pileExecution.pop();
         } else {
-            System.out.println("执行栈为空");
             return -1;
         }
 
@@ -500,7 +505,6 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
         if (!pileExecution.empty()) {
             currentTableSymboles = pileExecution.pop();
         } else {
-            System.out.println("执行栈为空");
             return -1;
         }
         setExprValue(ctx, currentTableSymboles.getValeur(varText));
