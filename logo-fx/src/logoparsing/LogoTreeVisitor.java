@@ -247,7 +247,7 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
         //拿到过程的名字
         String nomProcedure = ctx.VAR().getText();
 
-
+        //通过名字从tableProcedures拿到过程
         Procedure currentProcedure = tableProcedures.get(nomProcedure);
         Liste_instructionsContext listeInstructions = currentProcedure.getListeInstructions();
 
@@ -263,7 +263,7 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
             if(index < nomsParams.size()) {
                 Binome expr = evaluateExpr(currentExpr);
                 Double exprValue = expr._2;
-                String nomParam = nomsParams.get(0);
+                String nomParam = nomsParams.get(index);
                 tableSymbolesLocale.creerVar(nomParam, exprValue);
                 index++;
             } else return -1;//在调用函数的时候参数的个数和申明函数时不一样
