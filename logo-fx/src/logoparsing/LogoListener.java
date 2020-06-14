@@ -328,6 +328,18 @@ public interface LogoListener extends ParseTreeListener {
 	 */
 	void exitParenthese(LogoParser.ParentheseContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code executeFonction}
+	 * labeled alternative in {@link LogoParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterExecuteFonction(LogoParser.ExecuteFonctionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code executeFonction}
+	 * labeled alternative in {@link LogoParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitExecuteFonction(LogoParser.ExecuteFonctionContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code sum}
 	 * labeled alternative in {@link LogoParser#expr}.
 	 * @param ctx the parse tree

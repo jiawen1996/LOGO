@@ -46,6 +46,7 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
     TableSymboles tableSymbGlobale;
     //用来保存VAR和其对应的Procedure
     Map<String, Procedure> tableProcedures;
+    Map<String, Fonction> tableFonctions;
 
     // 用来保留两位小数
     DecimalFormat df = new DecimalFormat("#.00");
@@ -56,6 +57,7 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
         this.tableSymbGlobale = new TableSymboles();
         this.pileExecution = new Stack<>();
         this.tableProcedures = new HashMap<>();
+        this.tableFonctions = new HashMap<>();
         pileExecution.push(tableSymbGlobale);
     }
 
@@ -214,9 +216,74 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
         return 0;
     }
 
+//    @Override
+//    public Integer visitProcedure(LogoParser.ProcedureContext ctx) {
+//        String nomProcedure = ctx.VAR().getText();
+//        //创建一个作用域，然后推入执行栈中，方便参数列表把记住所有的参数名
+//        TableSymboles currentTableSymboles = new TableSymboles();
+//        pileExecution.push(currentTableSymboles);
+//
+//        Liste_instructionsContext listeInstructions = ctx.liste_instructions();
+//        //通过执行栈存储参数列表
+//        Integer createListeParamsSuccess;
+//        if (ctx.liste_parametres() != null) {
+//            //如果有参数传进来
+//            createListeParamsSuccess = visit(ctx.liste_parametres());
+//        } else {
+//            //如果没有参数
+//            createListeParamsSuccess = 0;
+//        }
+//
+//        //获取到参数名之后，创建相应的procedure实例
+//        currentTableSymboles = pileExecution.pop();
+//        if (createListeParamsSuccess == 0) {
+//            Procedure newProcedure = new Procedure(nomProcedure, currentTableSymboles, listeInstructions);
+//            tableProcedures.put(nomProcedure, newProcedure);
+//
+//            return 0;
+//        } else return -1;
+//    }
+//
+//    @Override
+//    public Integer visitExecuteProcedure(LogoParser.ExecuteProcedureContext ctx) {
+//        //拿到过程的名字
+//        String nomProcedure = ctx.VAR().getText();
+//
+//        //通过名字从tableProcedures拿到过程
+//        Procedure currentProcedure = tableProcedures.get(nomProcedure);
+//        Liste_instructionsContext listeInstructions = currentProcedure.getListeInstructions();
+//
+//        //在执行过程的时候需要把作用域推入执行栈
+//        TableSymboles tableSymbolesLocale = currentProcedure.getTableSymbLocale();
+//
+//        List<String> nomsParams = tableSymbolesLocale.getListeNomsParams();
+//        List<LogoParser.ExprContext> listeParamsValues = ctx.expr();
+//        int index = 0;
+//
+//        //给符号表中的参数赋值
+//        for (LogoParser.ExprContext currentExpr : listeParamsValues) {
+//            if (index < nomsParams.size()) {
+//                Binome expr = evaluateExpr(currentExpr);
+//                Double exprValue = expr._2;
+//                String nomParam = nomsParams.get(index);
+//                tableSymbolesLocale.creerVar(nomParam, exprValue);
+//                index++;
+//            } else return -1;//在调用函数的时候参数的个数和申明函数时不一样
+//        }
+//        pileExecution.push(tableSymbolesLocale);
+//
+//        //开始执行语句
+//        int doesSuccess = visit(listeInstructions);
+//        if (doesSuccess == 0) {
+//            pileExecution.pop();
+//            return 0;
+//        } else return -2;
+//
+//    }
+
     @Override
-    public Integer visitProcedure(LogoParser.ProcedureContext ctx) {
-        String nomProcedure = ctx.VAR().getText();
+    public Integer visitFonction(LogoParser.FonctionContext ctx) {
+        String nomFonction = ctx.VAR().getText();
         //创建一个作用域，然后推入执行栈中，方便参数列表把记住所有的参数名
         TableSymboles currentTableSymboles = new TableSymboles();
         pileExecution.push(currentTableSymboles);
@@ -224,35 +291,37 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
         Liste_instructionsContext listeInstructions = ctx.liste_instructions();
         //通过执行栈存储参数列表
         Integer createListeParamsSuccess;
-        if(ctx.liste_parametres() != null) {
+        if (ctx.liste_parametres() != null) {
             //如果有参数传进来
             createListeParamsSuccess = visit(ctx.liste_parametres());
-        }else {
+        } else {
             //如果没有参数
             createListeParamsSuccess = 0;
         }
 
-        //获取到参数名之后，创建相应的procedure实例
+        //获取到参数名之后，创建相应的fonction实例
         currentTableSymboles = pileExecution.pop();
         if (createListeParamsSuccess == 0) {
-            Procedure newProcedure = new Procedure(nomProcedure, currentTableSymboles, listeInstructions);
-            tableProcedures.put(nomProcedure, newProcedure);
+            Fonction newFonction = new Fonction(nomFonction, currentTableSymboles, listeInstructions);
+            newFonction.setResult(ctx.expr());
+            tableFonctions.put(nomFonction, newFonction);
 
             return 0;
         } else return -1;
     }
 
     @Override
-    public Integer visitExecuteProcedure(LogoParser.ExecuteProcedureContext ctx) {
+    public Integer visitExecuteFonction(LogoParser.ExecuteFonctionContext ctx) {
         //拿到过程的名字
-        String nomProcedure = ctx.VAR().getText();
+        String nomFonction = ctx.VAR().getText();
 
         //通过名字从tableProcedures拿到过程
-        Procedure currentProcedure = tableProcedures.get(nomProcedure);
-        Liste_instructionsContext listeInstructions = currentProcedure.getListeInstructions();
+        Fonction currentFonction = tableFonctions.get(nomFonction);
+        LogoParser.ExprContext result = currentFonction.getResult();
+        Liste_instructionsContext listeInstructions = currentFonction.getListeInstructions();
 
         //在执行过程的时候需要把作用域推入执行栈
-        TableSymboles tableSymbolesLocale = currentProcedure.getTableSymbLocale();
+        TableSymboles tableSymbolesLocale = currentFonction.getTableSymbLocale();
 
         List<String> nomsParams = tableSymbolesLocale.getListeNomsParams();
         List<LogoParser.ExprContext> listeParamsValues = ctx.expr();
@@ -260,7 +329,7 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 
         //给符号表中的参数赋值
         for (LogoParser.ExprContext currentExpr : listeParamsValues) {
-            if(index < nomsParams.size()) {
+            if (index < nomsParams.size()) {
                 Binome expr = evaluateExpr(currentExpr);
                 Double exprValue = expr._2;
                 String nomParam = nomsParams.get(index);
@@ -271,12 +340,22 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
         pileExecution.push(tableSymbolesLocale);
 
         //开始执行语句
-        int doesSuccess = visit(listeInstructions);
-        if(doesSuccess == 0) {
+        if(listeInstructions != null){
+            int doesSuccess = visit(listeInstructions);
+            if (doesSuccess == 0) {
+                Binome resultBinome = evaluateExpr(result);
+                if (resultBinome._1 == 0) setExprValue(ctx, resultBinome._2);
+                else return -3;//无法给返回值赋值
+                pileExecution.pop();
+                return 0;
+            } else return -2;//函数的指令集执行错误
+        }else {
+            Binome resultBinome = evaluateExpr(result);
+            if (resultBinome._1 == 0) setExprValue(ctx, resultBinome._2);
+            else return -3;//无法给返回值赋值
             pileExecution.pop();
             return 0;
         }
-        else return -2;
 
     }
 

@@ -58,6 +58,7 @@ expr:
  |	'loop' # loop
  |	':'VAR # appelle
  | '(' expr ')' # parenthese
+ | VAR '(' (expr)* ')' # executeFonction
 ;
 
 

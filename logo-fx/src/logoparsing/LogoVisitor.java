@@ -199,6 +199,13 @@ public interface LogoVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitParenthese(LogoParser.ParentheseContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code executeFonction}
+	 * labeled alternative in {@link LogoParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExecuteFonction(LogoParser.ExecuteFonctionContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code sum}
 	 * labeled alternative in {@link LogoParser#expr}.
 	 * @param ctx the parse tree
