@@ -37,7 +37,7 @@ instruction :
  | 'fcap' expr # fixeCap
  | 'lc' # leveCrayon
  | 'bc' # baisseCrayon
- | 'fpos' '[' expr ',' expr ']' # fixeXY
+ | 'fpos' '[' expr ',' expr ',' expr ']' # fixeXY
  | 'store' # store
  | 'move' # move
  | 'donne' '"' VAR expr # affecter

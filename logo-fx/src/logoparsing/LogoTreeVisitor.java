@@ -112,7 +112,6 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
             this._2 = (double) 0;
         }
 
-        // 返回这一步操作是否成功
         // L'information qui indique si l'éxecution réussit
 
         public Integer _1;
@@ -216,10 +215,11 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
         return 0;
     }
 
+
     @Override
     public Integer visitProcedure(LogoParser.ProcedureContext ctx) {
         String nomProcedure = ctx.VAR().getText();
-        //创建一个作用域，然后推入执行栈中，方便参数列表把记住所有的参数名
+        //创建一个作用域，然后推入执行栈中，为了参数列表把记住所有的参数名
         TableSymboles currentTableSymboles = new TableSymboles();
         pileExecution.push(currentTableSymboles);
 
@@ -251,6 +251,11 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 
         //通过名字从tableProcedures拿到过程
         Procedure currentProcedure = tableProcedures.get(nomProcedure);
+        if(currentProcedure == null) {
+            log.setValue("L’appel à une procédure " + nomProcedure + " non déclarée.");
+            log.setValue("\n");
+            return -11;
+        }
         Liste_instructionsContext listeInstructions = currentProcedure.getListeInstructions();
 
         //在执行过程的时候需要把作用域推入执行栈
@@ -268,7 +273,11 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
                 String nomParam = nomsParams.get(index);
                 tableSymbolesLocale.creerVar(nomParam, exprValue);
                 index++;
-            } else return -1;//在调用函数的时候参数的个数和申明函数时不一样
+            } else {
+                log.setValue("Le nombre de paramètre n'est pas correct.");
+                log.setValue("\n");
+                return -10;//在调用函数的时候参数的个数和申明函数时不一样
+            }
         }
         pileExecution.push(tableSymbolesLocale);
 
@@ -312,11 +321,17 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
 
     @Override
     public Integer visitExecuteFonction(LogoParser.ExecuteFonctionContext ctx) {
-        //拿到过程的名字
+        //récupérer le nom de procédure
         String nomFonction = ctx.VAR().getText();
 
-        //通过名字从tableProcedures拿到过程
+        //récupérer la procédure depuis tableProcedures en fonction du nom
         Fonction currentFonction = tableFonctions.get(nomFonction);
+        //L’appel à une fonction non déclarée
+        if(currentFonction == null) {
+            log.setValue("L’appel à une fonction " + nomFonction +" non déclarée.");
+            log.setValue("\n");
+            return -13;
+        }
         LogoParser.ExprContext result = currentFonction.getResult();
         Liste_instructionsContext listeInstructions = currentFonction.getListeInstructions();
 
@@ -335,12 +350,16 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
                 String nomParam = nomsParams.get(index);
                 tableSymbolesLocale.creerVar(nomParam, exprValue);
                 index++;
-            } else return -1;//在调用函数的时候参数的个数和申明函数时不一样
+            } else {
+                log.setValue("Le nombre de paramètre n'est pas correct.");
+                log.setValue("\n");
+                return -12;//在调用函数的时候参数的个数和申明函数时不一样
+            }
         }
         pileExecution.push(tableSymbolesLocale);
 
-        //开始执行语句
-        if(listeInstructions != null){
+        //Commencer à exécuter des instructions
+        if (listeInstructions != null) {
             int doesSuccess = visit(listeInstructions);
             if (doesSuccess == 0) {
                 Binome resultBinome = evaluateExpr(result);
@@ -349,7 +368,7 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
                 pileExecution.pop();
                 return 0;
             } else return -2;//函数的指令集执行错误
-        }else {
+        } else {
             Binome resultBinome = evaluateExpr(result);
             if (resultBinome._1 == 0) setExprValue(ctx, resultBinome._2);
             else return -3;//无法给返回值赋值
@@ -526,9 +545,11 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
     public Integer visitFixeXY(FixeXYContext ctx) {
         Binome x = evaluateExpr(ctx.expr(0));
         Binome y = evaluateExpr(ctx.expr(1));
-        if (x._1 == 0 && y._1 == 0) {
-            traceur.fixXY(x._2, y._2);
-            log.setValue("Place la tortue à la position ( " + x._2 + ", " + y._2 + " )");
+        Binome angle = evaluateExpr(ctx.expr(2));
+
+        if (x._1 == 0 && y._1 == 0 && angle._1 == 0) {
+            traceur.fixXY(x._2, y._2, angle._2);
+            log.setValue("Place la tortue à la position ( " + x._2 + ", " + y._2 + ", " + angle._2 + " )");
             log.setValue("\n");
         }
         return 0;
@@ -547,7 +568,7 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
     public Integer visitMove(MoveContext ctx) {
         int res = traceur.movePosition();
         if (res == 0) {
-            log.setValue("Déplacer à la position ( " + traceur.getPosx() + ", " + traceur.getPosy() + traceur.getAngle()
+            log.setValue("Déplacer à la position ( " + traceur.getPosx() + ", " + traceur.getPosy() + ", " + traceur.getAngle()
                     + " )");
             log.setValue("\n");
         }
@@ -566,6 +587,7 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
         }
 
         // 访问var下的子结点，并返回是否执行成功
+        pileExecution.push(currentTableSymboles);
         Binome value = evaluateExpr(ctx.expr());
         if (value._1 == 0) {
             String nomVar = ctx.VAR().getText();
@@ -573,7 +595,6 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
             log.setValue("Bien affecter la variable " + nomVar + " avec " + value._2);
             log.setValue("\n");
         }
-        pileExecution.push(currentTableSymboles);
         return 0;
     }
 
@@ -625,8 +646,11 @@ public class LogoTreeVisitor extends LogoBaseVisitor<Integer> {
     public Integer visitSi(SiContext ctx) {
         Binome condition = evaluateBooleen(ctx.expr());
         Binome bloc = new Binome();
-        if (condition._1 == 0) {
+        if (condition._1 == 0 && ctx.liste_instructions().size() == 2) {
             bloc._1 = condition._2 == 1 ? visit(ctx.liste_instructions(0)) : visit(ctx.liste_instructions(1));
+        } else if (condition._1 == 0 && ctx.liste_instructions().size() == 1) {
+            bloc._1 = condition._2 == 1 ? visit(ctx.liste_instructions(0)) : 0;
+
         }
         return bloc._1;
     }

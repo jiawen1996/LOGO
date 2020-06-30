@@ -78,9 +78,10 @@ public class Traceur {
         couleur.invert();
     }
 
-    public void fixXY(double x, double y) {
+    public void fixXY(double x, double y, double a) {
         posx = x;
         posy = y;
+        angle = a;
     }
 
     public boolean isMoveable() {
